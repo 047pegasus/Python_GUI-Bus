@@ -9,10 +9,14 @@ win.configure(bg="white")
 win.title("Bus Ticket Management System")
 
 frame = Frame(win, bg="white")
-img = (Image.open("bus.jpg"))
-resized_logo = img.resize((300, 300), Image.ANTIALIAS)
+img = (Image.open("./bus.jpg"))
+resized_logo = img.resize((400, 300), Image.ANTIALIAS)
 new_logo = ImageTk.PhotoImage(resized_logo)
-Label(frame, image=new_logo).pack(pady=(70, 0))
+
+homeimg = (Image.open("./home.png"))
+home = ImageTk.PhotoImage(homeimg)
+
+Label(frame, image=new_logo).pack(pady=10)
 Label(frame, text="Online Bus Booking System", font=('Montserrat ExtraBold', 40), bg="LightBlue", fg="Red").pack(pady=25)
 
 Label(frame, text="Name: Tanishq Agarwal", font=('Montserrat ExtraBold', 20), fg="Blue", bg="white").pack(pady=(50, 25))
@@ -39,29 +43,41 @@ def keypress(event):
     Label(newframe, image=new_logo).pack(pady=(70, 0))
     Label(newframe, text="Online Bus Booking System", font=('Montserrat ExtraBold', 40), bg="LightBlue", fg="Red").pack(pady=25)
 
-    def book_bus():
+    def bus_book():
         newWin.iconify()
         bookWin = Toplevel(newWin)
         bookWin.title("Bus Ticketing M.S.")
         bookWin.geometry("%dx%d" % (width, height))
         bookWin.configure(bg="white")
-
-        bookframe= Frame(bookWin, bg="white")
-
+        bookframe = Frame(bookWin, bg="white")
         Label(bookframe, image=new_logo).pack(pady=(70, 0))
-        Label(bookframe, text="Online Bus Booking System", font=('Montserrat ExtraBold', 40), bg="LightBlue",fg="Red").pack(pady=25)
-        Label(bookframe, text="Enter Journey Details", font=('Montserrat', 30), bg="Light Green", fg="Green").pack(pady=(20,20))
-
+        Label(bookframe, text="Online Bus Booking System", font=('Montserrat ExtraBold', 40), bg="LightBlue", fg="Red").pack(pady=25)
+        Label(bookframe, text="Enter Journey Details", font=('Montserrat', 30), bg="Light Green", fg="Green").pack(pady=(20, 20))
         Label(bookframe, text="To", font=('Montserrat', 20), bg="White", fg="Black").pack(side=LEFT)
-        Entry(bookframe)
+        Entry(bookframe, width=30).pack(side=LEFT, padx=(10, 40))
         Label(bookframe, text="From", font=('Montserrat', 20), bg="White", fg="Black").pack(side=LEFT)
-        Entry(bookframe)
+        Entry(bookframe, width=30).pack(side=LEFT, padx=(10, 40))
         Label(bookframe, text="Journey Date", font=('Montserrat', 20), bg="White", fg="Black").pack(side=LEFT)
-        Entry(bookframe)
-        Button(bookframe, text="Show Bus",fg="Black", bg="Light Green", font=('Montserrat', 20), activebackground="Green", activeforeground="white", cursor="hand2")
-        #Button(bookframe, text="Show Bus", image=("Home.jpg"), cursor="hand2")
+        Entry(bookframe, width=30).pack(side=LEFT)
 
-    Button(newframe, text="Seat Booking", font=('Montserrat SemiBold', 23), bg="LightGreen", fg="Black", activebackground="SeaGreen", activeforeground="white", cursor="hand2", command="book_bus").pack(side=LEFT, padx=70, pady=(50, 0))
+        def bookavailable_open():
+            avbframe = Frame(bookWin, bg="white")
+            Label(avbframe, text="Select Bus").pack(side=LEFT)
+            Label(avbframe, text="Operator").pack(side=LEFT)
+            Label(avbframe, text="Bus Type").pack(side=LEFT)
+            Label(avbframe, text="Available/Capacity").pack(side=LEFT)
+            Label(avbframe, text="Fare").pack(side=LEFT)
+            avbframe.pack()
+
+        Button(bookframe, text="Show Bus", fg="Black", bg="Medium Sea Green", font=('Montserrat Bold', 20), activebackground="Green", activeforeground="white", cursor="hand2", command=bookavailable_open).pack(side=LEFT, padx=(10, 20))
+        Button(bookframe, image=home, cursor="hand2").pack(side=LEFT)
+        bookframe.pack()
+
+    #def check():
+
+    #def add_bus():
+
+    Button(newframe, text="Seat Booking", font=('Montserrat SemiBold', 23), bg="LightGreen", fg="Black", activebackground="SeaGreen", activeforeground="white", cursor="hand2", command=bus_book).pack(side=LEFT, padx=70, pady=(50, 0))
     Button(newframe, text="Checked Booked Seat", font=('Montserrat SemiBold', 23), bg="LightGreen", fg="Black", activebackground="SeaGreen", activeforeground="white", cursor="hand2", command="check").pack(side=LEFT, padx=70, pady=(50, 0))
     Button(newframe, text="Add Bus Details", font=('Montserrat SemiBold', 23), bg="Light Green", fg="Black", activebackground="Green", activeforeground="white", cursor="hand2", command="add_bus").pack(side=LEFT, padx=70, pady=(50, 0))
 
