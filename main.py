@@ -68,6 +68,37 @@ def keypress(event):
             Label(avbframe, text="Available/Capacity").pack(side=LEFT)
             Label(avbframe, text="Fare").pack(side=LEFT)
             avbframe.pack()
+            detailsframe = Frame(bookWin, bg="white")
+            Button(detailsframe).pack(side=LEFT)
+            Label(detailsframe).pack(side=LEFT)
+            Label(detailsframe).pack(side=LEFT)
+            Label(detailsframe).pack(side=LEFT)
+
+            def psngdetails():
+                entryframe = Frame(bookWin, bg="white")
+                Label(entryframe, text="Fill Passenger Details to book the bus ticket", font=('Montserrat Bold', 30), bg="LightBlue", fg="Red").pack()
+                Label(entryframe, text="Name").pack(side=LEFT)
+                Entry(entryframe, width=20).pack(side=LEFT)
+                Label(entryframe, text="Gender").pack(side=LEFT)
+                options = [
+                    "Male"
+                    "Female"
+                    "Other"
+                ]
+                clicked = StringVar()
+                clicked.set("Select Gender")
+                OptionMenu(entryframe, clicked, *options).pack(side=LEFT)
+                Label(entryframe, text="No of Seats").pack(side=LEFT)
+                Entry(entryframe, width=10).pack(side=LEFT)
+                Label(entryframe, text="Mobile No.").pack(side=LEFT)
+                Entry(entryframe, width=20).pack(side=LEFT)
+                Label(entryframe, text="Age").pack(side=LEFT)
+                Entry(entryframe, width=10).pack(side=LEFT)
+                Button(entryframe, text="Book Seat(s)", cursor="hand2", fg="Black", bg="LightGreen").pack(side=LEFT)
+                entryframe.pack()
+
+            Button(detailsframe, text="Proceed to Book", bg="SeaGreen", fg="black", cursor="hand2", command=psngdetails).pack(side=LEFT)
+            detailsframe.pack()
 
         Button(bookframe, text="Show Bus", fg="Black", bg="Medium Sea Green", font=('Montserrat Bold', 20), activebackground="Green", activeforeground="white", cursor="hand2", command=bookavailable_open).pack(side=LEFT, padx=(10, 20))
         Button(bookframe, image=home, cursor="hand2").pack(side=LEFT)
