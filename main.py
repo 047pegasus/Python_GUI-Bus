@@ -1,5 +1,6 @@
 from tkinter import *
 from PIL import ImageTk, Image
+from tkinter.messagebox import askokcancel, showinfo, WARNING
 
 win = Tk()
 width = win.winfo_screenwidth()
@@ -94,7 +95,51 @@ def keypress(event):
                 Entry(entryframe, width=20).pack(side=LEFT)
                 Label(entryframe, text="Age").pack(side=LEFT)
                 Entry(entryframe, width=10).pack(side=LEFT)
-                Button(entryframe, text="Book Seat(s)", cursor="hand2", fg="Black", bg="LightGreen").pack(side=LEFT)
+
+                def book_seatButton():
+                    answer = askokcancel(
+                        title="Fare Confirm",
+                        message="Total amount to be paid will be:",
+                        icon=WARNING
+                    )
+                    if answer:
+                        bookWin.iconify()
+                        bookedWin = Toplevel(bookWin)
+                        bookedWin.title("Bus Ticketing M.S.")
+                        bookedWin.geometry("%dx%d" % (width, height))
+                        bookedWin.configure(bg="white")
+                        bookedframe = Frame(bookWin, bg="white")
+                        Label(bookedframe, image=new_logo).pack(pady=(70, 0))
+                        Label(bookedframe, text="Online Bus Booking System", font=('Montserrat ExtraBold', 40), bg="LightBlue", fg="Red").pack(pady=25)
+                        Label(bookedframe, text="Bus Ticket", font=('Montserrat Bold', 20), bg="white", fg="Black").pack()
+                        bookedlabelFrame = LabelFrame(bookedWin, text="Ticket Details")
+
+                        Label(bookedlabelFrame, text="Passengers:").pack()
+                        Label(bookedlabelFrame, text="No of Seats:").pack()
+                        Label(bookedlabelFrame, text="Age:").pack()
+                        Label(bookedlabelFrame, text="Booking Reference ID:").pack()
+                        Label(bookedlabelFrame, text="Travel on:").pack()
+                        Label(bookedlabelFrame, text="No of seats:").pack()
+
+                        Label(bookedlabelFrame, text="Gender:").pack()
+                        Label(bookedlabelFrame, text="Phone:").pack()
+                        Label(bookedlabelFrame, text="Fare:").pack()
+                        Label(bookedlabelFrame, text="Bus Detail:").pack()
+                        Label(bookedlabelFrame, text="Booked on:").pack()
+                        Label(bookedlabelFrame, text="Boarding Point:").pack()
+
+                        Label(bookedlabelFrame, text="* Total amount of Rs.1000.00/- will be paid at the time of boarding the bus.").pack()
+
+                        bookedlabelFrame.pack()
+
+                        showinfo(
+                            title="Success Transaction",
+                            message="Seat Booked"
+                        )
+                        bookedframe.pack()
+
+
+                Button(entryframe, text="Book Seat(s)", cursor="hand2", fg="Black", bg="LightGreen", command=book_seatButton).pack(side=LEFT)
                 entryframe.pack()
 
             Button(detailsframe, text="Proceed to Book", bg="SeaGreen", fg="black", cursor="hand2", command=psngdetails).pack(side=LEFT)
