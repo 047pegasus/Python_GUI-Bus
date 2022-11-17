@@ -63,38 +63,38 @@ def keypress(event):
 
         def bookavailable_open():
             avbframe = Frame(bookWin, bg="white")
-            Label(avbframe, text="Select Bus").pack(side=LEFT)
-            Label(avbframe, text="Operator").pack(side=LEFT)
-            Label(avbframe, text="Bus Type").pack(side=LEFT)
-            Label(avbframe, text="Available/Capacity").pack(side=LEFT)
-            Label(avbframe, text="Fare").pack(side=LEFT)
+            Label(avbframe, text="Select Bus", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(0, 30))
+            Label(avbframe, text="Operator", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(15, 30))
+            Label(avbframe, text="Bus Type", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(15, 30))
+            Label(avbframe, text="Available/Capacity", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(15, 30))
+            Label(avbframe, text="Fare", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(15, 0))
             avbframe.pack()
             detailsframe = Frame(bookWin, bg="white")
-            Button(detailsframe).pack(side=LEFT)
-            Label(detailsframe).pack(side=LEFT)
-            Label(detailsframe).pack(side=LEFT)
-            Label(detailsframe).pack(side=LEFT)
+            # Button(detailsframe).pack(side=LEFT)
+            # Label(detailsframe).pack(side=LEFT)
+            # Label(detailsframe).pack(side=LEFT)
+            # Label(detailsframe).pack(side=LEFT)
 
             def psngdetails():
                 entryframe = Frame(bookWin, bg="white")
-                Label(entryframe, text="Fill Passenger Details to book the bus ticket", font=('Montserrat Bold', 30), bg="LightBlue", fg="Red").pack()
-                Label(entryframe, text="Name").pack(side=LEFT)
-                Entry(entryframe, width=20).pack(side=LEFT)
-                Label(entryframe, text="Gender").pack(side=LEFT)
+                Label(entryframe, text="Fill Passenger Details to book the bus ticket", font=('Montserrat Bold', 30), bg="LightBlue", fg="Red").pack(pady=(20, 20))
+                Label(entryframe, text="Name", bg="white", font=('MontserratMedium', 15)).pack(side=LEFT, padx=(0, 20))
+                Entry(entryframe, width=20, bg="white").pack(side=LEFT, padx=(0, 10))
+                Label(entryframe, text="Gender", bg="white", font=('MontserratMedium', 15)).pack(side=LEFT, padx=(15, 20))
                 options = [
-                    "Male"
-                    "Female"
-                    "Other"
+                    "Male",
+                    "Female",
+                    "Other",
                 ]
                 clicked = StringVar()
                 clicked.set("Select Gender")
-                OptionMenu(entryframe, clicked, *options).pack(side=LEFT)
-                Label(entryframe, text="No of Seats").pack(side=LEFT)
-                Entry(entryframe, width=10).pack(side=LEFT)
-                Label(entryframe, text="Mobile No.").pack(side=LEFT)
-                Entry(entryframe, width=20).pack(side=LEFT)
-                Label(entryframe, text="Age").pack(side=LEFT)
-                Entry(entryframe, width=10).pack(side=LEFT)
+                OptionMenu(entryframe, clicked, *options).pack(side=LEFT, padx=(10, 20))
+                Label(entryframe, text="No of Seats", bg="white", font=('MontserratMedium', 15)).pack(side=LEFT, padx=(15, 20))
+                Entry(entryframe, width=10, bg="white").pack(side=LEFT, padx=(5, 20))
+                Label(entryframe, text="Mobile No.", bg="white", font=('MontserratMedium', 15)).pack(side=LEFT, padx=(15, 20))
+                Entry(entryframe, width=20, bg="white").pack(side=LEFT, padx=(5, 20))
+                Label(entryframe, text="Age", bg="white", font=('MontserratMedium', 15)).pack(side=LEFT, padx=(15, 20))
+                Entry(entryframe, width=10, bg="white").pack(side=LEFT, padx=(5, 20))
 
                 def book_seatButton():
                     answer = askokcancel(
@@ -108,7 +108,7 @@ def keypress(event):
                         bookedWin.title("Bus Ticketing M.S.")
                         bookedWin.geometry("%dx%d" % (width, height))
                         bookedWin.configure(bg="white")
-                        bookedframe = Frame(bookWin, bg="white")
+                        bookedframe = Frame(bookedWin, bg="white")
                         Label(bookedframe, image=new_logo).pack(pady=(70, 0))
                         Label(bookedframe, text="Online Bus Booking System", font=('Montserrat ExtraBold', 40), bg="LightBlue", fg="Red").pack(pady=25)
                         Label(bookedframe, text="Bus Ticket", font=('Montserrat Bold', 20), bg="white", fg="Black").pack()
@@ -139,10 +139,10 @@ def keypress(event):
                         bookedframe.pack()
 
 
-                Button(entryframe, text="Book Seat(s)", cursor="hand2", fg="Black", bg="LightGreen", command=book_seatButton).pack(side=LEFT)
+                Button(entryframe, text="Book Seat(s)", cursor="hand2", fg="Black", bg="LightGreen", command=book_seatButton).pack(side=LEFT, padx=(20,0))
                 entryframe.pack()
 
-            Button(detailsframe, text="Proceed to Book", bg="SeaGreen", fg="black", cursor="hand2", command=psngdetails).pack(side=LEFT)
+            Button(avbframe, text="Proceed to Book", bg="SeaGreen", fg="black", cursor="hand2", command=psngdetails).pack(side=LEFT, padx=(30, 0))
             detailsframe.pack()
 
         Button(bookframe, text="Show Bus", fg="Black", bg="Medium Sea Green", font=('Montserrat Bold', 20), activebackground="Green", activeforeground="white", cursor="hand2", command=bookavailable_open).pack(side=LEFT, padx=(10, 20))
