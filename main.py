@@ -173,12 +173,50 @@ def keypress(event):
         Button(bookframe, image=home, cursor="hand2", command=mv_home).pack(side=LEFT)
         bookframe.pack()
 
-    # def check():
+    def check_book():
+        newWin.withdraw()
+        checkWin = Toplevel(newWin)
+        checkWin.title("Bus Ticketing M.S.")
+        checkWin.geometry("%dx%d" % (width, height))
+        checkWin.configure(bg="white")
 
+        checkheadframe = Frame(checkWin, bg="white")
+
+        Label(checkheadframe, image=new_logo).pack(pady=(30, 0))
+        Label(checkheadframe, text="Online Bus Booking System", font=('Montserrat ExtraBold', 30), bg="LightBlue", fg="Red").pack(pady=15)
+
+        Label(checkheadframe, text="Check Your Booking", font=('Montserrat Bold', 20), bg="Sea Green", fg="White").pack(pady=10)
+        Label(checkheadframe, text="Enter your Mobile No: ", font=('Montserrat Medium', 15), bg="white", fg="black").pack(side=LEFT, padx=(0, 30), pady=10)
+        Entry(checkheadframe, width=25, bg="white").pack(side=LEFT, padx=(10, 30), pady=10)
+
+        def chk_bk():
+            chkbklabelFrame = LabelFrame(checkWin, text="Ticket Details")
+
+            Label(chkbklabelFrame, text="Passengers:").pack()
+            Label(chkbklabelFrame, text="No of Seats:").pack()
+            Label(chkbklabelFrame, text="Age:").pack()
+            Label(chkbklabelFrame, text="Booking Reference ID:").pack()
+            Label(chkbklabelFrame, text="Travel on:").pack()
+            Label(chkbklabelFrame, text="No of seats:").pack()
+
+            Label(chkbklabelFrame, text="Gender:").pack()
+            Label(chkbklabelFrame, text="Phone:").pack()
+            Label(chkbklabelFrame, text="Fare:").pack()
+            Label(chkbklabelFrame, text="Bus Detail:").pack()
+            Label(chkbklabelFrame, text="Booked on:").pack()
+            Label(chkbklabelFrame, text="Boarding Point:").pack()
+
+            Label(chkbklabelFrame, text="* Total amount of Rs.1000.00/- will be paid at the time of boarding the bus.").pack()
+
+            chkbklabelFrame.pack()
+
+        Button(checkheadframe, text="Check Booking", font=('Montserrat Medium', 15), bg="White", fg="Black", command=chk_bk).pack(side=LEFT, padx=(10, 0), pady=10)
+
+        checkheadframe.pack()
     # def add_bus():
 
     Button(newframe, text="Seat Booking", font=('Montserrat SemiBold', 23), bg="LightGreen", fg="Black", activebackground="SeaGreen", activeforeground="white", cursor="hand2", command=bus_book).pack(side=LEFT, padx=70, pady=(50, 0))
-    Button(newframe, text="Checked Booked Seat", font=('Montserrat SemiBold', 23), bg="LightGreen", fg="Black", activebackground="SeaGreen", activeforeground="white", cursor="hand2", command="check").pack(side=LEFT, padx=70, pady=(50, 0))
+    Button(newframe, text="Checked Booked Seat", font=('Montserrat SemiBold', 23), bg="LightGreen", fg="Black", activebackground="SeaGreen", activeforeground="white", cursor="hand2", command=check_book).pack(side=LEFT, padx=70, pady=(50, 0))
     Button(newframe, text="Add Bus Details", font=('Montserrat SemiBold', 23), bg="Light Green", fg="Black", activebackground="Green", activeforeground="white", cursor="hand2", command="add_bus").pack(side=LEFT, padx=70, pady=(50, 0))
 
     newframe.pack()
