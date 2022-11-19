@@ -1,6 +1,6 @@
 from tkinter import *
 from PIL import ImageTk, Image
-from tkinter.messagebox import askokcancel, showinfo, WARNING
+from tkinter.messagebox import askokcancel, askyesnocancel, showinfo, WARNING, YES
 
 win = Tk()
 width = win.winfo_screenwidth()
@@ -112,10 +112,8 @@ def keypress(event):
                         bookedWin.configure(bg="white")
                         bookedframe = Frame(bookedWin, bg="white")
                         Label(bookedframe, image=new_logo).pack(pady=(70, 0))
-                        Label(bookedframe, text="Online Bus Booking System", font=('Montserrat ExtraBold', 40),
-                              bg="LightBlue", fg="Red").pack(pady=25)
-                        Label(bookedframe, text="Bus Ticket", font=('Montserrat Bold', 20), bg="white",
-                              fg="Black").pack()
+                        Label(bookedframe, text="Online Bus Booking System", font=('Montserrat ExtraBold', 40), bg="LightBlue", fg="Red").pack(pady=25)
+                        Label(bookedframe, text="Bus Ticket", font=('Montserrat Bold', 20), bg="white", fg="Black").pack()
                         bookedlabelFrame = LabelFrame(bookedWin, text="Ticket Details")
 
                         Label(bookedlabelFrame, text="Passengers:").pack()
@@ -132,8 +130,7 @@ def keypress(event):
                         Label(bookedlabelFrame, text="Booked on:").pack()
                         Label(bookedlabelFrame, text="Boarding Point:").pack()
 
-                        Label(bookedlabelFrame,
-                              text="* Total amount of Rs.1000.00/- will be paid at the time of boarding the bus.").pack()
+                        Label(bookedlabelFrame, text="* Total amount of Rs.1000.00/- will be paid at the time of boarding the bus.").pack()
 
                         bookedframe.pack()
                         bookedlabelFrame.pack()
@@ -143,6 +140,25 @@ def keypress(event):
                             message="Seat Booked"
                         )
 
+                        def bookedWinclose_Handler():
+                            answin= askyesnocancel(
+                                title="Closing Confirmation",
+                                message="For exiting press Yes or No to return to menu",
+                                default=YES
+                            )
+                            if answin is True:
+                                showinfo(
+                                    title="Appreciation Message",
+                                    message="Thank you for using my Bus Ticket Management system!!"
+                                )
+                                win.destroy()
+                            elif answin is None:
+                                print("Pressed Cancel!!")
+                            else:
+                                bookedWin.destroy()
+                                newWin.deiconify()
+
+                        bookedWin.protocol("WM_DELETE_WINDOW", bookedWinclose_Handler)
                 Button(entryframe, text="Book Seat(s)", font=('Montserrat Medium', 15), cursor="hand2", fg="Black", bg="LightGreen", command=book_seatButton).pack(side=LEFT, padx=(20, 0))
                 entryframe.pack()
 
