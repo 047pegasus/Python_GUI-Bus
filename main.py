@@ -197,27 +197,98 @@ def keypress(event):
             Label(chkbklabelFrame, text="Age:").pack()
             Label(chkbklabelFrame, text="Booking Reference ID:").pack()
             Label(chkbklabelFrame, text="Travel on:").pack()
-            Label(chkbklabelFrame, text="No of seats:").pack()
 
             Label(chkbklabelFrame, text="Gender:").pack()
             Label(chkbklabelFrame, text="Phone:").pack()
             Label(chkbklabelFrame, text="Fare:").pack()
-            Label(chkbklabelFrame, text="Bus Detail:").pack()
-            Label(chkbklabelFrame, text="Booked on:").pack()
+            #Label(chkbklabelFrame, text="Bus Detail:").pack()
+            #Label(chkbklabelFrame, text="Booked on:").pack()
             Label(chkbklabelFrame, text="Boarding Point:").pack()
+            Label(chkbklabelFrame, text="Destination Point:").pack()
 
-            Label(chkbklabelFrame, text="* Total amount of Rs.1000.00/- will be paid at the time of boarding the bus.").pack()
+            Label(chkbklabelFrame, text="* Total amount of Rs./- will be paid at the time of boarding the bus.").pack()
 
             chkbklabelFrame.pack()
 
-        Button(checkheadframe, text="Check Booking", font=('Montserrat Medium', 15), bg="White", fg="Black", command=chk_bk).pack(side=LEFT, padx=(10, 0), pady=10)
+        Button(checkheadframe, text="Check Booking", font=('Montserrat Medium', 15), bg="White", fg="Black", command=chk_bk, cursor="hand2").pack(side=LEFT, padx=(10, 0), pady=10)
 
         checkheadframe.pack()
-    # def add_bus():
+
+    def admin_ms():
+        newWin.withdraw()
+        adminWin = Toplevel(newWin)
+        adminWin.title("Bus Ticketing M.S.")
+        adminWin.geometry("%dx%d" % (width, height))
+        adminWin.configure(bg="white")
+
+        adminframe = Frame(adminWin, bg="white")
+
+        Label(adminframe, image=new_logo).pack(pady=(30, 0))
+        Label(adminframe, text="Online Bus Booking System", font=('Montserrat ExtraBold', 30), bg="LightBlue", fg="Red").pack(pady=15)
+        Label(adminframe, text="Add New Bus Details to Database", font=('Montserrat Bold', 30), bg="White", fg="SpringGreen2").pack(pady=20)
+
+        def new_opr():
+            adminWin.withdraw()
+            newoprWin = Toplevel(adminWin)
+            newoprWin.title("Bus Ticketing M.S.")
+            newoprWin.geometry("%dx%d" % (width, height))
+            newoprWin.configure(bg="white")
+
+            newoprframe = Frame(newoprWin, bg="white")
+
+            Label(newoprframe, image=new_logo).pack(pady=(30, 0))
+            Label(newoprframe, text="Online Bus Booking System", font=('Montserrat ExtraBold', 30), bg="LightBlue", fg="Red").pack(pady=15)
+
+            Label(newoprframe, text="Add Bus Operator Details", font=('Montserrat Bold', 30), bg="White", fg="Lime Green").pack(pady=20)
+
+            Label(newoprframe, text="Operator ID", font=('Montserrat Bold', 15), bg="White", fg="Black").pack(side=LEFT, pady=20)
+            oprentry=Entry(newoprframe, width=15)
+            oprentry.pack(side=LEFT, pady=20, padx=5)
+            Label(newoprframe, text="Name", font=('Montserrat Bold', 15), bg="White", fg="Black").pack(side=LEFT, pady=20, padx=5)
+            nameentry=Entry(newoprframe, width=25)
+            nameentry.pack(side=LEFT, pady=20, padx=5)
+            Label(newoprframe, text="Address", font=('Montserrat Bold', 15), bg="White", fg="Black").pack(side=LEFT, pady=20, padx=5)
+            addressentry=Entry(newoprframe, width=35)
+            addressentry.pack(side=LEFT, pady=20, padx=5)
+            Label(newoprframe, text="Phone", font=('Montserrat Bold', 15), bg="White", fg="Black").pack(side=LEFT, pady=20, padx=5)
+            phoneentry=Entry(newoprframe, width=25)
+            phoneentry.pack(side=LEFT, pady=20, padx=5)
+            Label(newoprframe, text="Email", font=('Montserrat Bold', 15), bg="White", fg="Black").pack(side=LEFT, pady=20, padx=5)
+            emailentry=Entry(newoprframe, width=25)
+            emailentry.pack(side=LEFT, pady=20, padx=5)
+
+            def updateopr():
+                showinfo(
+                    title="Operator Entry Update",
+                    message="Operator Record updated successfully"
+                )
+                oprentry.delete(0, END)
+                nameentry.delete(0, END)
+                addressentry.delete(0, END)
+                phoneentry.delete(0, END)
+                emailentry.delete(0, END)
+
+            Button(newoprframe, text="Add", font=('Montserrat Medium', 20), bg="Lime Green", fg="Black", cursor="hand2").pack(side=LEFT, pady=20, padx=(10, 10))
+            Button(newoprframe, text="Edit", font=('Montserrat Medium', 20), bg="Lime Green", fg="Black", cursor="hand2", command=updateopr).pack(side=LEFT, pady=20, padx=(10, 10))
+
+            def mv_home():
+                newWin.deiconify()
+            Button(newoprframe, image=home, cursor="hand2",command= mv_home).pack(side=LEFT, pady=20)
+
+            newoprframe.pack()
+
+        #def new_bus():
+
+        Button(adminframe, text="New Operator", font=('Montserrat Medium', 25), bg="lawn green", fg="Black", border=3, command=new_opr, cursor="hand2").pack(side=LEFT, padx=(0, 50), pady=40)
+        Button(adminframe, text="New Bus", font=('Montserrat Medium', 25), bg="orange red", fg="Black", border=3, command="new_bus", cursor="hand2").pack(side=LEFT, padx=(50, 50), pady=40)
+        Button(adminframe, text="New Route", font=('Montserrat Medium', 25), bg="SlateBlue2", fg="Black", border=3, command="new_route", cursor="hand2").pack(side=LEFT, padx=(50, 50), pady=40)
+        Button(adminframe, text="New Run", font=('Montserrat Medium', 25), bg="DarkOrchid2", fg="Black", border=3, command="new_run", cursor="hand2").pack(side=LEFT, padx=(50, 0), pady=40)
+
+        adminframe.pack()
 
     Button(newframe, text="Seat Booking", font=('Montserrat SemiBold', 23), bg="LightGreen", fg="Black", activebackground="SeaGreen", activeforeground="white", cursor="hand2", command=bus_book).pack(side=LEFT, padx=70, pady=(50, 0))
     Button(newframe, text="Checked Booked Seat", font=('Montserrat SemiBold', 23), bg="LightGreen", fg="Black", activebackground="SeaGreen", activeforeground="white", cursor="hand2", command=check_book).pack(side=LEFT, padx=70, pady=(50, 0))
-    Button(newframe, text="Add Bus Details", font=('Montserrat SemiBold', 23), bg="Light Green", fg="Black", activebackground="Green", activeforeground="white", cursor="hand2", command="add_bus").pack(side=LEFT, padx=70, pady=(50, 0))
+    Button(newframe, text="Add Bus Details", font=('Montserrat SemiBold', 23), bg="Light Green", fg="Black", activebackground="Green", activeforeground="white", cursor="hand2", command=admin_ms).pack(side=LEFT, padx=70, pady=(50, 0))
 
     newframe.pack()
 
