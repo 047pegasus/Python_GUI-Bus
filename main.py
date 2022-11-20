@@ -272,17 +272,164 @@ def keypress(event):
             Button(newoprframe, text="Edit", font=('Montserrat Medium', 20), bg="Lime Green", fg="Black", cursor="hand2", command=updateopr).pack(side=LEFT, pady=20, padx=(10, 10))
 
             def mv_home():
+                newoprWin.destroy()
                 newWin.deiconify()
             Button(newoprframe, image=home, cursor="hand2",command= mv_home).pack(side=LEFT, pady=20)
 
             newoprframe.pack()
 
-        #def new_bus():
+        def new_bus():
+            adminWin.withdraw()
+            newbusWin = Toplevel(adminWin)
+            newbusWin.title("Bus Ticketing M.S.")
+            newbusWin.geometry("%dx%d" % (width, height))
+            newbusWin.configure(bg="white")
+
+            newbusframe = Frame(newbusWin, bg="white")
+
+            Label(newbusframe, image=new_logo).pack(pady=(30, 0))
+            Label(newbusframe, text="Online Bus Booking System", font=('Montserrat ExtraBold', 30), bg="LightBlue", fg="Red").pack(pady=15)
+
+            Label(newbusframe, text="Add Bus Details", font=('Montserrat Bold', 30), bg="White", fg="Lime Green").pack(pady=20)
+            Label(newbusframe, text="Bus ID", font=('Montserrat Bold', 15), bg="White", fg="Black").pack(side=LEFT, pady=20)
+            busidentry = Entry(newbusframe, width=10)
+            busidentry.pack(side=LEFT, pady=20, padx=5)
+            Label(newbusframe, text="Bus Type", font=('Montserrat Bold', 15), bg="White", fg="Black").pack(side=LEFT, pady=20)
+            options = [
+                "AC 2X2",
+                "AC 3X2",
+                "Non AC 2X2",
+                "Non AC 3X2",
+                "AC-Sleeper 2x1",
+                "Non AC-Sleeper 2x1"
+            ]
+            clicked = StringVar()
+            clicked.set("Select Bus Type")
+            OptionMenu(newbusframe, clicked, *options).pack(side=LEFT, padx=(10, 20))
+            Label(newbusframe, text="Capacity", font=('Montserrat Bold', 15), bg="White", fg="Black").pack(side=LEFT, pady=20, padx=5)
+            capentry = Entry(newbusframe, width=10)
+            capentry.pack(side=LEFT, pady=20, padx=5)
+            Label(newbusframe, text="Fare(in Rs.)", font=('Montserrat Bold', 15), bg="White", fg="Black").pack(side=LEFT, pady=20, padx=5)
+            fareentry = Entry(newbusframe, width=10)
+            fareentry.pack(side=LEFT, pady=20, padx=5)
+            Label(newbusframe, text="Operator ID", font=('Montserrat Bold', 15), bg="White", fg="Black").pack(side=LEFT, pady=20, padx=5)
+            opidentry = Entry(newbusframe, width=10)
+            opidentry.pack(side=LEFT, pady=20, padx=5)
+            Label(newbusframe, text="Route ID", font=('Montserrat Bold', 15), bg="White", fg="Black").pack(side=LEFT, pady=20, padx=5)
+            routeidentry = Entry(newbusframe, width=10)
+            routeidentry.pack(side=LEFT, pady=20, padx=5)
+
+            def updatebus():
+                showinfo(
+                    title="Bus Entry Update",
+                    message="Bus Record added successfully"
+                )
+                busidentry.delete(0, END)
+                capentry.delete(0, END)
+                fareentry.delete(0, END)
+                opidentry.delete(0, END)
+                routeidentry.delete(0, END)
+
+            Button(newbusframe, text="Add Bus", font=('Montserrat Medium', 20), bg="Lime Green", fg="Black", cursor="hand2").pack(side=LEFT, pady=50, padx=(10, 10))
+            Button(newbusframe, text="Edit Bus", font=('Montserrat Medium', 20), bg="Lime Green", fg="Black", cursor="hand2", command=updatebus).pack(side=LEFT, pady=50, padx=(10, 10))
+
+            def mv_home():
+                newbusWin.destroy()
+                newWin.deiconify()
+
+            Button(newbusframe, image=home, cursor="hand2", command=mv_home).pack(side=LEFT, pady=20)
+
+            newbusframe.pack()
+
+        def new_route():
+            adminWin.withdraw()
+            newrouteWin = Toplevel(adminWin)
+            newrouteWin.title("Bus Ticketing M.S.")
+            newrouteWin.geometry("%dx%d" % (width, height))
+            newrouteWin.configure(bg="white")
+
+            newrouteframe = Frame(newrouteWin, bg="white")
+
+            Label(newrouteframe, image=new_logo).pack(pady=(30, 0))
+            Label(newrouteframe, text="Online Bus Booking System", font=('Montserrat ExtraBold', 30), bg="LightBlue", fg="Red").pack(pady=15)
+
+            Label(newrouteframe, text="Add Bus Route Details", font=('Montserrat Bold', 30), bg="White", fg="Lime Green").pack(pady=20)
+            Label(newrouteframe, text="Route ID", font=('Montserrat Bold', 20), bg="White", fg="Black").pack(side=LEFT, pady=40)
+            routeidentry = Entry(newrouteframe, width=10)
+            routeidentry.pack(side=LEFT, pady=40, padx=(5, 10))
+            Label(newrouteframe, text="Station Name", font=('Montserrat Bold', 20), bg="White", fg="Black").pack(side=LEFT, pady=40)
+            stationnameentry = Entry(newrouteframe, width=10)
+            stationnameentry.pack(side=LEFT, pady=40, padx=(5, 10))
+            Label(newrouteframe, text="Station ID", font=('Montserrat Bold', 20), bg="White", fg="Black").pack(side=LEFT, pady=40)
+            stationidentry = Entry(newrouteframe, width=10)
+            stationidentry.pack(side=LEFT, pady=40, padx=(5, 10))
+
+            def updateroute():
+                showinfo(
+                    title="Bus Route Update",
+                    message="Bus Route added successfully"
+                )
+                routeidentry.delete(0, END)
+                stationnameentry.delete(0, END)
+                stationidentry.delete(0, END)
+
+            Button(newrouteframe, text="Add Route", font=('Montserrat Medium', 20), bg="Lime Green", fg="Black", cursor="hand2").pack(side=LEFT, pady=40, padx=(10, 10))
+            Button(newrouteframe, text="Delete Route", font=('Montserrat Medium', 20), bg="Lime Green", fg="Red", cursor="hand2", command=updateroute).pack(side=LEFT, pady=40, padx=(10, 10))
+
+            def mv_home():
+                newrouteWin.destroy()
+                newWin.deiconify()
+
+            Button(newrouteframe, image=home, cursor="hand2", command=mv_home).pack(side=LEFT, pady=40)
+
+            newrouteframe.pack()
+
+        def new_run():
+            adminWin.withdraw()
+            newrunWin = Toplevel(adminWin)
+            newrunWin.title("Bus Ticketing M.S.")
+            newrunWin.geometry("%dx%d" % (width, height))
+            newrunWin.configure(bg="white")
+
+            newrunframe = Frame(newrunWin, bg="white")
+
+            Label(newrunframe, image=new_logo).pack(pady=(30, 0))
+            Label(newrunframe, text="Online Bus Booking System", font=('Montserrat ExtraBold', 30), bg="LightBlue", fg="Red").pack(pady=15)
+            Label(newrunframe, text="Add Bus Running Details", font=('Montserrat Bold', 30), bg="White", fg="Lime Green").pack(pady=30)
+            Label(newrunframe, text="Bus ID", font=('Montserrat Bold', 20), bg="White", fg="Black").pack(side=LEFT, pady=50)
+            busidentry = Entry(newrunframe, width=15)
+            busidentry.pack(side=LEFT, pady=40, padx=(5, 10))
+            Label(newrunframe, text="Runing Date", font=('Montserrat Bold', 20), bg="White", fg="Black").pack(side=LEFT, pady=50)
+            runningdateentry = Entry(newrunframe, width=15)
+            runningdateentry.pack(side=LEFT, pady=50, padx=(5, 10))
+            Label(newrunframe, text="Seat(s) Available", font=('Montserrat Bold', 20), bg="White", fg="Black").pack(side=LEFT, pady=50)
+            seatavbentry = Entry(newrunframe, width=15)
+            seatavbentry.pack(side=LEFT, pady=50, padx=(5, 10))
+
+            def updaterun():
+                showinfo(
+                    title="Bus Run Update",
+                    message="Bus Run updated successfully"
+                )
+                busidentry.delete(0, END)
+                runningdateentry.delete(0, END)
+                seatavbentry.delete(0, END)
+
+            Button(newrunframe, text="Add Run", font=('Montserrat Medium', 20), bg="Lime Green", fg="Black", cursor="hand2").pack(side=LEFT, pady=50, padx=(10, 10))
+            Button(newrunframe, text="Delete Run", font=('Montserrat Medium', 20), bg="Lime Green", fg="Red", cursor="hand2", command=updaterun).pack(side=LEFT, pady=50, padx=(10, 10))
+
+            def mv_home():
+                newrunWin.destroy()
+                newWin.deiconify()
+
+            Button(newrunframe, image=home, cursor="hand2", command=mv_home).pack(side=LEFT, pady=50)
+
+            newrunframe.pack()
 
         Button(adminframe, text="New Operator", font=('Montserrat Medium', 25), bg="lawn green", fg="Black", border=3, command=new_opr, cursor="hand2").pack(side=LEFT, padx=(0, 50), pady=40)
-        Button(adminframe, text="New Bus", font=('Montserrat Medium', 25), bg="orange red", fg="Black", border=3, command="new_bus", cursor="hand2").pack(side=LEFT, padx=(50, 50), pady=40)
-        Button(adminframe, text="New Route", font=('Montserrat Medium', 25), bg="SlateBlue2", fg="Black", border=3, command="new_route", cursor="hand2").pack(side=LEFT, padx=(50, 50), pady=40)
-        Button(adminframe, text="New Run", font=('Montserrat Medium', 25), bg="DarkOrchid2", fg="Black", border=3, command="new_run", cursor="hand2").pack(side=LEFT, padx=(50, 0), pady=40)
+        Button(adminframe, text="New Bus", font=('Montserrat Medium', 25), bg="orange red", fg="Black", border=3, command=new_bus, cursor="hand2").pack(side=LEFT, padx=(50, 50), pady=40)
+        Button(adminframe, text="New Route", font=('Montserrat Medium', 25), bg="SlateBlue2", fg="Black", border=3, command=new_route, cursor="hand2").pack(side=LEFT, padx=(50, 50), pady=40)
+        Button(adminframe, text="New Run", font=('Montserrat Medium', 25), bg="DarkOrchid2", fg="Black", border=3, command=new_run, cursor="hand2").pack(side=LEFT, padx=(50, 0), pady=40)
 
         adminframe.pack()
 
