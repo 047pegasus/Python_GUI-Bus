@@ -1,6 +1,10 @@
 from tkinter import *
 from PIL import ImageTk, Image
 from tkinter.messagebox import askokcancel, askyesnocancel, showinfo, WARNING, YES
+import sqlite3
+
+dbcon = sqlite3.connect("BUS MS")
+cursor = dbcon.execute("SELECT * FROM bus")
 
 win = Tk()
 width = win.winfo_screenwidth()
@@ -444,6 +448,7 @@ def keypress(event):
     tagframe.pack()
 
 
+dbcon.close()
 win.bind("<Key>", keypress)
 win.mainloop()  # Start main eventloop
 '''def main():'''
