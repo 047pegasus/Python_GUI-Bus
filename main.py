@@ -77,11 +77,11 @@ def keypress(event):
             detailsframe = Frame(bookWin, bg="white")
 
             radvar = IntVar(detailsframe, 1)
-            Radiobutton(detailsframe, text="Bus 1", variable=radvar, value="1", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(0, 150))
-            Label(detailsframe, text="Kamla", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(0, 300))
+            Radiobutton(detailsframe, text="Bus 1", variable=radvar, value="1", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(150, 200))
+            Label(detailsframe, text="Kamla", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(0, 200))
             Label(detailsframe, text="AC 3x2", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(0, 300))
             Label(detailsframe, text="30/30", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(0, 300))
-            Label(detailsframe, text="RS. 2500", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(0, 0))
+            Label(detailsframe, text="RS. 2500", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(0, 300))
 
             def psngdetails():
                 entryframe = Frame(bookWin, bg="white")
@@ -168,7 +168,7 @@ def keypress(event):
                 Button(entryframe, text="Book Seat(s)", font=('Montserrat Medium', 15), cursor="hand2", fg="Black", bg="LightGreen", command=book_seatButton).pack(side=LEFT, padx=(20, 0))
                 entryframe.pack()
 
-            Button(avbframe, text="Proceed to Book", font=('Montserrat Medium', 15), bg="SeaGreen", fg="White", cursor="hand2", command=psngdetails).pack(side=LEFT, padx=(30, 0))
+            Button(avbframe, text="Proceed to Book", font=('Montserrat Medium', 15), bg="SeaGreen", fg="White", cursor="hand2", command=psngdetails).pack(side=LEFT, padx=(90, 0))
             detailsframe.pack()
 
         Button(bookframe, text="Show Bus", fg="Black", bg="Medium Sea Green", font=('Montserrat Bold', 20), activebackground="Green", activeforeground="white", cursor="hand2", command=bookavailable_open).pack(side=LEFT, padx=(10, 20))
