@@ -55,10 +55,10 @@ def keypress(event):
         bookWin.geometry("%dx%d" % (width, height))
         bookWin.configure(bg="white")
         bookframe = Frame(bookWin, bg="white")
-        Label(bookframe, image=new_logo).pack(pady=(70, 0))
-        Label(bookframe, text="Online Bus Booking System", font=('Montserrat ExtraBold', 40), bg="LightBlue", fg="Red").pack(pady=25)
-        Label(bookframe, text="Enter Journey Details", font=('Montserrat', 30), bg="Light Green", fg="Green").pack(pady= (20, 20))
-        Label(bookframe, text="To", font=('Montserrat', 20), bg="White", fg="Black").pack(side=LEFT)
+        Label(bookframe, image=new_logo).pack(pady=(40, 0))
+        Label(bookframe, text="Online Bus Booking System", font=('Montserrat ExtraBold', 30), bg="LightBlue", fg="Red").pack(pady=25)
+        Label(bookframe, text="Enter Journey Details", font=('Montserrat', 20), bg="Light Green", fg="Green").pack(pady=(10, 20))
+        Label(bookframe, text="To", font=('Montserrat', 15), bg="White", fg="Black").pack(side=LEFT)
         Entry(bookframe, width=30).pack(side=LEFT, padx=(10, 40))
         Label(bookframe, text="From", font=('Montserrat', 20), bg="White", fg="Black").pack(side=LEFT)
         Entry(bookframe, width=30).pack(side=LEFT, padx=(10, 40))
@@ -66,24 +66,26 @@ def keypress(event):
         Entry(bookframe, width=30).pack(side=LEFT)
 
         def bookavailable_open():
-            avbframe = Frame(bookWin, bg="white")
-            Label(avbframe, text="Select Bus", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(0, 30))
-            Label(avbframe, text="Operator", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(15, 30))
-            Label(avbframe, text="Bus Type", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(15, 30))
-            Label(avbframe, text="Available/Capacity", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT,
-                                                                                                        padx=(15, 30))
-            Label(avbframe, text="Fare", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(15, 0))
+            avbframe = Frame(bookWin, bg="white", pady=25)
+            Label(avbframe, text="Select Bus", bg="white", font=('Montserrat Bold', 15)).pack(side=LEFT, padx=(0, 90))
+            Label(avbframe, text="Operator", bg="white", font=('Montserrat Bold', 15)).pack(side=LEFT, padx=(90, 90))
+            Label(avbframe, text="Bus Type", bg="white", font=('Montserrat Bold', 15)).pack(side=LEFT, padx=(90, 90))
+            Label(avbframe, text="Available/Capacity", bg="white", font=('Montserrat Bold', 15)).pack(side=LEFT, padx=(90, 90))
+            Label(avbframe, text="Fare", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(90, 0))
             avbframe.pack()
+
             detailsframe = Frame(bookWin, bg="white")
 
-            # Button(detailsframe).pack(side=LEFT)
-            # Label(detailsframe).pack(side=LEFT)
-            # Label(detailsframe).pack(side=LEFT)
-            # Label(detailsframe).pack(side=LEFT)
+            radvar = IntVar(detailsframe, 1)
+            Radiobutton(detailsframe, text="Bus 1", variable=radvar, value="1", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(0, 150))
+            Label(detailsframe, text="Kamla", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(0, 300))
+            Label(detailsframe, text="AC 3x2", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(0, 300))
+            Label(detailsframe, text="30/30", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(0, 300))
+            Label(detailsframe, text="RS. 2500", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(0, 0))
 
             def psngdetails():
                 entryframe = Frame(bookWin, bg="white")
-                Label(entryframe, text="Fill Passenger Details to book the bus ticket", font=('Montserrat Bold', 30), bg="LightBlue", fg="Red").pack(pady=(20, 20))
+                Label(entryframe, text="Fill Passenger Details to book the bus ticket", font=('Montserrat Bold', 20), bg="LightBlue", fg="Red").pack(pady=(20, 20))
                 Label(entryframe, text="Name", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(0, 20))
                 Entry(entryframe, width=20, bg="white").pack(side=LEFT, padx=(0, 10))
                 Label(entryframe, text="Gender", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(15, 20))
@@ -166,12 +168,13 @@ def keypress(event):
                 Button(entryframe, text="Book Seat(s)", font=('Montserrat Medium', 15), cursor="hand2", fg="Black", bg="LightGreen", command=book_seatButton).pack(side=LEFT, padx=(20, 0))
                 entryframe.pack()
 
-            Button(avbframe, text="Proceed to Book", font=('Montserrat Medium', 15), bg="SeaGreen", fg="black", cursor="hand2", command=psngdetails).pack(side=LEFT, padx=(30, 0))
+            Button(avbframe, text="Proceed to Book", font=('Montserrat Medium', 15), bg="SeaGreen", fg="White", cursor="hand2", command=psngdetails).pack(side=LEFT, padx=(30, 0))
             detailsframe.pack()
 
         Button(bookframe, text="Show Bus", fg="Black", bg="Medium Sea Green", font=('Montserrat Bold', 20), activebackground="Green", activeforeground="white", cursor="hand2", command=bookavailable_open).pack(side=LEFT, padx=(10, 20))
 
         def mv_home():
+            bookWin.destroy()
             newWin.deiconify()
 
         Button(bookframe, image=home, cursor="hand2", command=mv_home).pack(side=LEFT)
