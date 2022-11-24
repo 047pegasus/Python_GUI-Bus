@@ -444,6 +444,17 @@ def keypress(event):
     Button(newframe, text="Checked Booked Seat", font=('Montserrat SemiBold', 23), bg="LightGreen", fg="Black", activebackground="SeaGreen", activeforeground="white", cursor="hand2", command=check_book).pack(side=LEFT, padx=70, pady=(50, 0))
     Button(newframe, text="Add Bus Details", font=('Montserrat SemiBold', 23), bg="Light Green", fg="Black", activebackground="Green", activeforeground="white", cursor="hand2", command=admin_ms).pack(side=LEFT, padx=70, pady=(50, 0))
 
+    def newWinclose_Handler():
+        ansuser = askokcancel(
+            title="Closing Confirmation",
+            message="For exiting press Yes or No to return to menu",
+        )
+        if ansuser is True:
+            win.destroy()
+        else:
+            print("User selected cancel")
+
+    newWin.protocol("WM_DELETE_WINDOW", newWinclose_Handler)
     newframe.pack()
 
     tagframe = Frame(newWin, bg="white")
