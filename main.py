@@ -226,26 +226,32 @@ def keypress(event):
 
         Label(checkheadframe, text="Check Your Booking", font=('Montserrat Bold', 20), bg="Sea Green", fg="White").pack(pady=10)
         Label(checkheadframe, text="Enter your Mobile No: ", font=('Montserrat Medium', 15), bg="white", fg="black").pack(side=LEFT, padx=(0, 30), pady=10)
-        Entry(checkheadframe, width=25, bg="white").pack(side=LEFT, padx=(10, 30), pady=10)
+        chk_mob_entry = Entry(checkheadframe, width=25, bg="white")
+        chk_mob_entry.pack(side=LEFT, padx=(10, 30), pady=10)
 
         def chk_bk():
+            dbcon = sqlite3.connect("BUS MS")
+            cursor = dbcon.execute("""SELECT DISTINCT p.name, p.contact, p.gender, p.age, pay.no_of_seats, pay. payid, pay.amount, rt.destination, rt.origin, run.date FROM passenger as p, payment as pay, route as rt, runs as run where p.contact="{}" AND p.id=pay.passid AND pay.payed_route=rt.rid AND rt.rid=run.routeid;""".format(chk_mob_entry.get()))
+            query_fetch_two = (cursor.fetchall())
+            print(query_fetch_two)
+
             chkbklabelFrame = LabelFrame(checkWin, text="Ticket Details")
 
-            Label(chkbklabelFrame, text="Passengers:").pack()
-            Label(chkbklabelFrame, text="No of Seats:").pack()
-            Label(chkbklabelFrame, text="Age:").pack()
-            Label(chkbklabelFrame, text="Booking Reference ID:").pack()
-            Label(chkbklabelFrame, text="Travel on:").pack()
+            Label(chkbklabelFrame, text="Passengers: {}".format(query_fetch_two[0][0])).pack()
+            Label(chkbklabelFrame, text="No of Seats: {}".format(query_fetch_two[0][4])).pack()
+            Label(chkbklabelFrame, text="Age: {}".format(query_fetch_two[0][3])).pack()
+            Label(chkbklabelFrame, text="Booking Reference ID: {}".format(query_fetch_two[0][5])).pack()
+            Label(chkbklabelFrame, text="Travel on: {}".format(query_fetch_two[0][9])).pack()
 
-            Label(chkbklabelFrame, text="Gender:").pack()
-            Label(chkbklabelFrame, text="Phone:").pack()
-            Label(chkbklabelFrame, text="Fare:").pack()
+            Label(chkbklabelFrame, text="Gender: {}".format(query_fetch_two[0][2])).pack()
+            Label(chkbklabelFrame, text="Phone: {}".format(query_fetch_two[0][1])).pack()
+            Label(chkbklabelFrame, text="Fare: {}".format(query_fetch_two[0][6])).pack()
             #Label(chkbklabelFrame, text="Bus Detail:").pack()
             #Label(chkbklabelFrame, text="Booked on:").pack()
-            Label(chkbklabelFrame, text="Boarding Point:").pack()
-            Label(chkbklabelFrame, text="Destination Point:").pack()
+            Label(chkbklabelFrame, text="Boarding Point: {}".format(query_fetch_two[0][8])).pack()
+            Label(chkbklabelFrame, text="Destination Point: {}".format(query_fetch_two[0][7])).pack()
 
-            Label(chkbklabelFrame, text="* Total amount of Rs./- will be paid at the time of boarding the bus.").pack()
+            Label(chkbklabelFrame, text="* Total amount of Rs.{}/- will be paid at the time of boarding the bus.".format(query_fetch_two[0][4]*1000)).pack()
 
             chkbklabelFrame.pack()
 
