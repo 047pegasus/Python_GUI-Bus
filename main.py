@@ -5,6 +5,25 @@ import sqlite3
 
 dbcon = sqlite3.connect("BUS MS")
 cursor = dbcon.execute("SELECT * FROM bus")
+bus_fetch = cursor.fetchall()
+
+cursor = dbcon.execute("SELECT * FROM city")
+city_fetch = cursor.fetchall()
+
+cursor = dbcon.execute("SELECT * FROM operator")
+operator_fetch = cursor.fetchall()
+
+cursor = dbcon.execute("SELECT * FROM passenger")
+passenger_fetch = cursor.fetchall()
+
+cursor = dbcon.execute("SELECT * FROM payment")
+payment_fetch = cursor.fetchall()
+
+cursor = dbcon.execute("SELECT * FROM route")
+route_fetch = cursor.fetchall()
+
+cursor = dbcon.execute("SELECT * FROM runs")
+runs_fetch = cursor.fetchall()
 
 win = Tk()
 width = win.winfo_screenwidth()
@@ -59,13 +78,23 @@ def keypress(event):
         Label(bookframe, text="Online Bus Booking System", font=('Montserrat ExtraBold', 30), bg="LightBlue", fg="Red").pack(pady=25)
         Label(bookframe, text="Enter Journey Details", font=('Montserrat', 20), bg="Light Green", fg="Green").pack(pady=(10, 20))
         Label(bookframe, text="To", font=('Montserrat', 15), bg="White", fg="Black").pack(side=LEFT)
-        Entry(bookframe, width=30).pack(side=LEFT, padx=(10, 40))
+        to = Entry(bookframe, width=30)
+        to.pack(side=LEFT, padx=(10, 40))
         Label(bookframe, text="From", font=('Montserrat', 20), bg="White", fg="Black").pack(side=LEFT)
-        Entry(bookframe, width=30).pack(side=LEFT, padx=(10, 40))
+        frm = Entry(bookframe, width=30)
+        frm.pack(side=LEFT, padx=(10, 40))
         Label(bookframe, text="Journey Date", font=('Montserrat', 20), bg="White", fg="Black").pack(side=LEFT)
-        Entry(bookframe, width=30).pack(side=LEFT)
+        jdate = Entry(bookframe, width=30)
+        jdate.pack(side=LEFT)
 
         def bookavailable_open():
+            dbcon = sqlite3.connect("BUS MS")
+            cursor = dbcon.execute("""SELECT opr.name,bus.type,bus.capacity,runs.available,runs.fare FROM operator as opr,bus,runs,route where route.destination="{}" and route.origin="{}" and runs.date="{}" and bus.busid=runs.busid and route.rid=runs.routeid;""".format(to.get(), frm.get(), jdate.get()))
+            query_fetch_one = (cursor.fetchall())
+            print(query_fetch_one)
+            count = len(query_fetch_one)
+            print(count)
+
             avbframe = Frame(bookWin, bg="white", pady=25)
             Label(avbframe, text="Select Bus", bg="white", font=('Montserrat Bold', 15)).pack(side=LEFT, padx=(0, 90))
             Label(avbframe, text="Operator", bg="white", font=('Montserrat Bold', 15)).pack(side=LEFT, padx=(90, 90))
@@ -76,12 +105,13 @@ def keypress(event):
 
             detailsframe = Frame(bookWin, bg="white")
 
-            radvar = IntVar(detailsframe, 1)
-            Radiobutton(detailsframe, text="Bus 1", variable=radvar, value="1", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(150, 200))
-            Label(detailsframe, text="Kamla", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(0, 200))
-            Label(detailsframe, text="AC 3x2", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(0, 300))
-            Label(detailsframe, text="30/30", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(0, 300))
-            Label(detailsframe, text="RS. 2500", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(0, 300))
+            #radvar = IntVar(detailsframe, 1)
+            for i in range(count):
+                #Radiobutton(detailsframe, text="Bus 1", variable=radvar, value="1", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(150, 200))
+                Label(detailsframe, text=query_fetch_one[i][0], bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT)
+                Label(detailsframe, text=query_fetch_one[i][1], bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT)
+                Label(detailsframe, text="{}/{}".format(query_fetch_one[i][2],query_fetch_one[i][3]), bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT)
+                Label(detailsframe, text=query_fetch_one[i][4], bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT)
 
             def psngdetails():
                 entryframe = Frame(bookWin, bg="white")
@@ -167,9 +197,11 @@ def keypress(event):
                         bookedWin.protocol("WM_DELETE_WINDOW", bookedWinclose_Handler)
                 Button(entryframe, text="Book Seat(s)", font=('Montserrat Medium', 15), cursor="hand2", fg="Black", bg="LightGreen", command=book_seatButton).pack(side=LEFT, padx=(20, 0))
                 entryframe.pack()
+                dbcon.close()
 
             Button(avbframe, text="Proceed to Book", font=('Montserrat Medium', 15), bg="SeaGreen", fg="White", cursor="hand2", command=psngdetails).pack(side=LEFT, padx=(90, 0))
             detailsframe.pack()
+
 
         Button(bookframe, text="Show Bus", fg="Black", bg="Medium Sea Green", font=('Montserrat Bold', 20), activebackground="Green", activeforeground="white", cursor="hand2", command=bookavailable_open).pack(side=LEFT, padx=(10, 20))
 
