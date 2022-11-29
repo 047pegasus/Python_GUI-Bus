@@ -310,6 +310,17 @@ def keypress(event):
                 print(cursor.fetchall())
                 dbcon.close()
 
+                showinfo(
+                    title="Operator Entry Added",
+                    message="Operator Record added successfully!!"
+                )
+
+                oprentry.delete(0, END)
+                nameentry.delete(0, END)
+                addressentry.delete(0, END)
+                phoneentry.delete(0, END)
+                emailentry.delete(0, END)
+
             def updateopr():
                 dbcon = sqlite3.connect("BUS MS")
                 cursor = dbcon.execute("""UPDATE operator SET(name="{}",contact="{}",address="{}",email="{}") WHERE operator.id={};""".format(nameentry.get(), phoneentry.get(), addressentry.get(), emailentry.get(), int(oprentry.get())))
@@ -322,6 +333,7 @@ def keypress(event):
                     title="Operator Entry Update",
                     message="Operator Record updated successfully"
                 )
+
                 oprentry.delete(0, END)
                 nameentry.delete(0, END)
                 addressentry.delete(0, END)
@@ -351,6 +363,7 @@ def keypress(event):
             Label(newbusframe, text="Online Bus Booking System", font=('Montserrat ExtraBold', 30), bg="LightBlue", fg="Red").pack(pady=15)
 
             Label(newbusframe, text="Add Bus Details", font=('Montserrat Bold', 30), bg="White", fg="Lime Green").pack(pady=20)
+
             Label(newbusframe, text="Bus ID", font=('Montserrat Bold', 15), bg="White", fg="Black").pack(side=LEFT, pady=20)
             busidentry = Entry(newbusframe, width=10)
             busidentry.pack(side=LEFT, pady=20, padx=5)
@@ -365,7 +378,8 @@ def keypress(event):
             ]
             clicked = StringVar()
             clicked.set("Select Bus Type")
-            OptionMenu(newbusframe, clicked, *options).pack(side=LEFT, padx=(10, 20))
+            typeentry= OptionMenu(newbusframe, clicked, *options)
+            typeentry.pack(side=LEFT, padx=(10, 20))
             Label(newbusframe, text="Capacity", font=('Montserrat Bold', 15), bg="White", fg="Black").pack(side=LEFT, pady=20, padx=5)
             capentry = Entry(newbusframe, width=10)
             capentry.pack(side=LEFT, pady=20, padx=5)
@@ -379,18 +393,70 @@ def keypress(event):
             routeidentry = Entry(newbusframe, width=10)
             routeidentry.pack(side=LEFT, pady=20, padx=5)
 
-            def updatebus():
-                showinfo(
-                    title="Bus Entry Update",
-                    message="Bus Record added successfully"
-                )
+            def addbus():
+                dbcon = sqlite3.connect("BUS MS")
+                cursor= dbcon.execute("""SELECT id FROM OPERATOR WHERE id={};""".format(int(busidentry.get())))
+                output = cursor.fetchall()
+                if len(output) == 0:
+                    print("OPERATOR NOT FOUND!!")
+                    showinfo(
+                        title="ERROR",
+                        message="OPERATOR NOT FOUND!!"
+                    )
+
+                else:
+                    cursor = dbcon.execute("""INSERT INTO bus VALUES({},{},{},{});""".format(int(busidentry.get()), int(typeentry.get()), int(capentry.get()), int(opidentry.get())))
+                    dbcon.commit()
+                    print(cursor.fetchall())
+                    cursor = dbcon.execute("""SELECT MAX(runid) FROM runs;""")
+                    max_run= cursor.fetchall()
+                    max_runint = int(max_run) + 1
+                    cursor = dbcon.execute("""INSERT INTO runs (runid,busid,routeid,fare) VALUES({},{},{},{});""".format(max_runint, int(busidentry.get()),  int(routeidentry.get()), int(fareentry.get())))
+                    dbcon.commit()
+                    print(cursor.fetchall())
+                    # cursor = dbcon.execute("SELECT * FROM operator;")
+                    dbcon.close()
+
+                    showinfo(
+                        title="Bus Entry Added",
+                        message="Bus Record added successfully!!"
+                    )
+
+
                 busidentry.delete(0, END)
                 capentry.delete(0, END)
                 fareentry.delete(0, END)
                 opidentry.delete(0, END)
                 routeidentry.delete(0, END)
 
-            Button(newbusframe, text="Add Bus", font=('Montserrat Medium', 20), bg="Lime Green", fg="Black", cursor="hand2").pack(side=LEFT, pady=50, padx=(10, 10))
+            def updatebus():
+                dbcon = sqlite3.connect("BUS MS")
+                cursor= dbcon.execute("""SELECT id FROM OPERATOR WHERE id={};""".format(int(busidentry.get())))
+                output = cursor.fetchall()
+                if len(output) == 0:
+                    print("OPERATOR NOT FOUND!!")
+                    showinfo(
+                        title="ERROR",
+                        message="OPERATOR NOT FOUND!!"
+                    )
+
+                else:
+                    cursor = dbcon.execute("""UPDATE bus SET({},{},{}) WHERE bus.busid={};""".format(int(typeentry.get()), int(capentry.get()), int(opidentry.get()), int(busidentry.get())))
+                    print(cursor.fetchall())
+                    dbcon.commit()
+                    dbcon.close()
+                    showinfo(
+                        title="Bus Entry Update",
+                        message="Bus Record updated successfully"
+                    )
+
+                busidentry.delete(0, END)
+                capentry.delete(0, END)
+                fareentry.delete(0, END)
+                opidentry.delete(0, END)
+                routeidentry.delete(0, END)
+
+            Button(newbusframe, text="Add Bus", font=('Montserrat Medium', 20), bg="Lime Green", fg="Black", cursor="hand2", command=addbus).pack(side=LEFT, pady=50, padx=(10, 10))
             Button(newbusframe, text="Edit Bus", font=('Montserrat Medium', 20), bg="Lime Green", fg="Black", cursor="hand2", command=updatebus).pack(side=LEFT, pady=50, padx=(10, 10))
 
             def mv_home():
@@ -424,7 +490,45 @@ def keypress(event):
             stationidentry = Entry(newrouteframe, width=10)
             stationidentry.pack(side=LEFT, pady=40, padx=(5, 10))
 
+            def addroute():
+                dbcon = sqlite3.connect("BUS MS")
+                cursor = dbcon.execute("""SELECT routeid FROM runs WHERE rid={};""".format(int(routeidentry.get())))
+                output = cursor.fetchall()
+                if len(output) == 0:
+                    print("ROUTE NOT FOUND!!")
+                    showinfo(
+                        title="ERROR",
+                        message="ROUTE NOT FOUND!!"
+                    )
+
+                else:
+                    cursor = dbcon.execute("""INSERT INTO city VALUES({},"{}");""".format(int(stationidentry.get()), stationnameentry.get()))
+                    print(cursor.fetchall())
+                    dbcon.commit()
+                    cursor = dbcon.execute("""SELECT max(cid) FROM city;""")
+                    max_city = cursor.fetchall()
+                    max_cities= int(max_city)
+                    cursor = dbcon.execute("""SELECT cname FROM city;""")
+                    cities = cursor.fetchall()
+                    print(cities)
+                    for i in range(max_cities-1):
+                        if cities[i] != stationnameentry.get():
+                            cursor = dbcon.execute("""INSERT INTO route VALUES({},"{}","{}");""".format(int(routeidentry.get()), cities[i], cities[i+1]))
+                            print(cursor.fetchall())
+                            dbcon.commit()
+
+                    dbcon.close()
+                    showinfo(
+                        title="Bus Entry Added",
+                        message="Bus Record added successfully!!"
+                    )
+
+                routeidentry.delete(0, END)
+                stationnameentry.delete(0, END)
+                stationidentry.delete(0, END)
+
             def updateroute():
+
                 showinfo(
                     title="Bus Route Update",
                     message="Bus Route added successfully"
@@ -433,7 +537,7 @@ def keypress(event):
                 stationnameentry.delete(0, END)
                 stationidentry.delete(0, END)
 
-            Button(newrouteframe, text="Add Route", font=('Montserrat Medium', 20), bg="Lime Green", fg="Black", cursor="hand2").pack(side=LEFT, pady=40, padx=(10, 10))
+            Button(newrouteframe, text="Add Route", font=('Montserrat Medium', 20), bg="Lime Green", fg="Black", cursor="hand2", command=addroute).pack(side=LEFT, pady=40, padx=(10, 10))
             Button(newrouteframe, text="Delete Route", font=('Montserrat Medium', 20), bg="Lime Green", fg="Red", cursor="hand2", command=updateroute).pack(side=LEFT, pady=40, padx=(10, 10))
 
             def mv_home():
@@ -466,6 +570,27 @@ def keypress(event):
             seatavbentry = Entry(newrunframe, width=15)
             seatavbentry.pack(side=LEFT, pady=50, padx=(5, 10))
 
+            def addrun():
+                dbcon = sqlite3.connect("BUS MS")
+                cursor = dbcon.execute("""SELECT routeid FROM runs WHERE busid={}""".format(int(busidentry.get())))
+                output = cursor.fetchall()
+                if len(output) == 0:
+                    print("ROUTE OR BUS NOT FOUND!!")
+                    showinfo(
+                        title="ERROR",
+                        message="ROUTE(BUS) NOT FOUND!!"
+                    )
+
+                else:
+                    cursor= dbcon.execute("""SELECT MAX(runid) FROM runs;""")
+                    max_run = cursor.fetchall()
+                    maxrunint = int(max_run) + 1
+                    cursor = dbcon.execute("""INSERT INTO runs(runid,busid,date,available) VALUES({},{},"{}",{});""".format(maxrunint, int(busidentry.get()), runningdateentry.get(), int(seatavbentry.get())))
+                    print(cursor.fetchall())
+                    dbcon.commit()
+
+                dbcon.close()
+
             def updaterun():
                 showinfo(
                     title="Bus Run Update",
@@ -475,7 +600,7 @@ def keypress(event):
                 runningdateentry.delete(0, END)
                 seatavbentry.delete(0, END)
 
-            Button(newrunframe, text="Add Run", font=('Montserrat Medium', 20), bg="Lime Green", fg="Black", cursor="hand2").pack(side=LEFT, pady=50, padx=(10, 10))
+            Button(newrunframe, text="Add Run", font=('Montserrat Medium', 20), bg="Lime Green", fg="Black", cursor="hand2", command=addrun).pack(side=LEFT, pady=50, padx=(10, 10))
             Button(newrunframe, text="Delete Run", font=('Montserrat Medium', 20), bg="Lime Green", fg="Red", cursor="hand2", command=updaterun).pack(side=LEFT, pady=50, padx=(10, 10))
 
             def mv_home():
