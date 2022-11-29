@@ -254,7 +254,7 @@ def keypress(event):
             Label(chkbklabelFrame, text="* Total amount of Rs.{}/- will be paid at the time of boarding the bus.".format(query_fetch_two[0][4]*1000)).pack()
 
             chkbklabelFrame.pack()
-
+            dbcon.close()
         Button(checkheadframe, text="Check Booking", font=('Montserrat Medium', 15), bg="White", fg="Black", command=chk_bk, cursor="hand2").pack(side=LEFT, padx=(10, 0), pady=10)
 
         checkheadframe.pack()
@@ -302,7 +302,22 @@ def keypress(event):
             emailentry=Entry(newoprframe, width=25)
             emailentry.pack(side=LEFT, pady=20, padx=5)
 
+            def addopr():
+                dbcon = sqlite3.connect("BUS MS")
+                cursor = dbcon.execute("""INSERT INTO operator VALUES({},"{}","{}","{}","{}");""".format(int(oprentry.get()), nameentry.get(), phoneentry.get(), addressentry.get(), emailentry.get()))
+                #cursor = dbcon.execute("SELECT * FROM operator;")
+                dbcon.commit()
+                print(cursor.fetchall())
+                dbcon.close()
+
             def updateopr():
+                dbcon = sqlite3.connect("BUS MS")
+                cursor = dbcon.execute("""UPDATE operator SET(name="{}",contact="{}",address="{}",email="{}") WHERE operator.id={};""".format(nameentry.get(), phoneentry.get(), addressentry.get(), emailentry.get(), int(oprentry.get())))
+                #cursor = dbcon.execute("SELECT * FROM operator;")
+                dbcon.commit()
+                print(cursor.fetchall())
+                dbcon.close()
+
                 showinfo(
                     title="Operator Entry Update",
                     message="Operator Record updated successfully"
@@ -313,7 +328,7 @@ def keypress(event):
                 phoneentry.delete(0, END)
                 emailentry.delete(0, END)
 
-            Button(newoprframe, text="Add", font=('Montserrat Medium', 20), bg="Lime Green", fg="Black", cursor="hand2").pack(side=LEFT, pady=20, padx=(10, 10))
+            Button(newoprframe, text="Add", font=('Montserrat Medium', 20), bg="Lime Green", fg="Black", cursor="hand2", command=addopr).pack(side=LEFT, pady=20, padx=(10, 10))
             Button(newoprframe, text="Edit", font=('Montserrat Medium', 20), bg="Lime Green", fg="Black", cursor="hand2", command=updateopr).pack(side=LEFT, pady=20, padx=(10, 10))
 
             def mv_home():
