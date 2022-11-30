@@ -164,7 +164,7 @@ def keypress(event):
                         dbcon = sqlite3.connect("BUS MS")
                         cursor = dbcon.execute("UPDATE runs SET available={} WHERE runid={};".format(int(query_fetch_one[bus_selected][3]-seats), query_fetch_one[bus_selected][5]))
                         print(cursor.fetchall())
-                        #dbcon.commit()
+                        dbcon.commit()
                         cursor = dbcon.execute("SELECT MAX(id) FROM passenger;")
                         max_pass = cursor.fetchall()
                         cursor = dbcon.execute("SELECT contact FROM passenger WHERE contact={};".format(int(mob_entry.get())))
@@ -172,22 +172,22 @@ def keypress(event):
                         if len(test) == 0:
                             cursor = dbcon.execute("""INSERT INTO passenger VALUES({},"{}",{},{},"{}")""".format((int(max_pass[0][0])+1), name_entry.get(), mob_entry.get(), age_entry.get(), clicked.get()))
                             print(cursor.fetchall())
-                            #dbcon.commit()
+                            dbcon.commit()
                         else:
                             cursor = dbcon.execute("""UPDATE passenger SET name="{}",age={},gender="{}" WHERE contact={};""".format(name_entry.get(), age_entry.get(), clicked.get(), mob_entry.get()))
                             print(cursor.fetchall())
-                            #dbcon.commit()
+                            dbcon.commit()
 
                         cursor = dbcon.execute("SELECT MAX(payid) FROM payment;")
                         max_payne = cursor.fetchall()
 
                         cursor = dbcon.execute("""INSERT INTO payment VALUES({},{},{},"{}",{},{})""".format((int(max_payne[0][0])+1), (int(max_pass[0][0])+1), query_fetch_one[bus_selected][4]*seats, date.today(), seats, query_fetch_one[bus_selected][6]))
                         print(cursor.fetchall())
-                        #dbcon.commit()
+                        dbcon.commit()
 
                         answer = askokcancel(
                             title="Fare Confirm",
-                            message="Total amount to be paid will be:",
+                            message="Total amount to be paid will be:"+str(query_fetch_one[bus_selected][4]*seats),
                             icon=WARNING
                         )
                         if answer:
@@ -200,23 +200,22 @@ def keypress(event):
                             Label(bookedframe, image=new_logo).pack(pady=(70, 0))
                             Label(bookedframe, text="Online Bus Booking System", font=('Montserrat ExtraBold', 40), bg="LightBlue", fg="Red").pack(pady=25)
                             Label(bookedframe, text="Bus Ticket", font=('Montserrat Bold', 20), bg="white", fg="Black").pack()
-                            bookedlabelFrame = LabelFrame(bookedWin, text="Ticket Details")
+                            bookedlabelFrame = LabelFrame(bookedWin, text="Bus Ticket", font=('Montserrat Bold', 15), bg="white", fg="Black", bd=3)
+                            Label(bookedlabelFrame, text="Passengers:" + name_entry.get()).pack()
+                            Label(bookedlabelFrame, text="No of Seats:" + str(seats)).pack()
+                            Label(bookedlabelFrame, text="Age:" + age_entry.get()).pack()
+                            Label(bookedlabelFrame, text="Booking Reference ID:" + str(int(max_payne[0][0])+1)).pack()
+                            Label(bookedlabelFrame, text="Travel on:" + jdate.get()).pack()
+                            Label(bookedlabelFrame, text="No of seats:" + str(seats)).pack()
 
-                            Label(bookedlabelFrame, text="Passengers:").pack()
-                            Label(bookedlabelFrame, text="No of Seats:").pack()
-                            Label(bookedlabelFrame, text="Age:").pack()
-                            Label(bookedlabelFrame, text="Booking Reference ID:").pack()
-                            Label(bookedlabelFrame, text="Travel on:").pack()
-                            Label(bookedlabelFrame, text="No of seats:").pack()
+                            Label(bookedlabelFrame, text="Gender:" + clicked.get()).pack()
+                            Label(bookedlabelFrame, text="Phone:" + mob_entry.get()).pack()
+                            Label(bookedlabelFrame, text="Fare:" + str(query_fetch_one[bus_selected][4])).pack()
+                            Label(bookedlabelFrame, text="Bus Detail:" + str(query_fetch_one[bus_selected][1])).pack()
+                            Label(bookedlabelFrame, text="Booked on:" + str(date.today())).pack()
+                            Label(bookedlabelFrame, text="Boarding Point:" + frm.get()).pack()
 
-                            Label(bookedlabelFrame, text="Gender:").pack()
-                            Label(bookedlabelFrame, text="Phone:").pack()
-                            Label(bookedlabelFrame, text="Fare:").pack()
-                            Label(bookedlabelFrame, text="Bus Detail:").pack()
-                            Label(bookedlabelFrame, text="Booked on:").pack()
-                            Label(bookedlabelFrame, text="Boarding Point:").pack()
-
-                            Label(bookedlabelFrame, text="* Total amount of Rs.1000.00/- will be paid at the time of boarding the bus.").pack()
+                            Label(bookedlabelFrame, text="* Total amount of Rs." + str(query_fetch_one[bus_selected][4]*seats) + ".00/- will be paid at the time of boarding the bus.").pack()
 
                             bookedframe.pack()
                             bookedlabelFrame.pack()
