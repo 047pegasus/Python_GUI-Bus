@@ -2,6 +2,7 @@ from tkinter import *
 from PIL import ImageTk, Image
 from tkinter.messagebox import askokcancel, askyesnocancel, showinfo, WARNING, YES
 import sqlite3
+from datetime import date
 
 dbcon = sqlite3.connect("BUS MS")
 
@@ -97,7 +98,7 @@ def keypress(event):
 
         def bookavailable_open():
             dbcon = sqlite3.connect("BUS MS")
-            cursor = dbcon.execute("""SELECT opr.name,bus.type,bus.capacity,runs.available,runs.fare FROM operator as opr,bus,runs,route where route.destination="{}" and route.origin="{}" and runs.date="{}" and bus.busid=runs.busid and route.rid=runs.routeid;""".format(to.get(), frm.get(), jdate.get()))
+            cursor = dbcon.execute("""SELECT DISTINCT opr.name,bus.type,bus.capacity,runs.available,runs.fare,runs.runid,runs.routeid FROM operator as opr,bus,runs,route where route.destination="{}" and route.origin="{}" and runs.date="{}" and bus.busid=runs.busid and route.rid=runs.routeid;""".format(to.get(), frm.get(), jdate.get()))
             query_fetch_one = (cursor.fetchall())
             print(query_fetch_one)
             count = len(query_fetch_one)
@@ -112,23 +113,21 @@ def keypress(event):
             avbframe.pack()
 
             detailsframe = Frame(bookWin, bg="white")
-            h = Scrollbar(detailsframe, orient='horizontal')
-            h.pack(side=BOTTOM, fill=X)
-            v = Scrollbar(detailsframe)
-            v.pack(side=BOTTOM, fill=Y)
-            #radvar = IntVar(detailsframe, 1)
+            radvar = IntVar(detailsframe, 1)
             for i in range(count):
-                #Radiobutton(detailsframe, text="Bus 1", variable=radvar, value="1", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(150, 200))
+                Radiobutton(detailsframe, text="Bus"+str(i+1)+":", variable=radvar, value=i+1, bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(150, 200))
                 Label(detailsframe, text=query_fetch_one[i][0], bg="white", font=('Montserrat Medium', 15,)).pack(side=LEFT)
                 Label(detailsframe, text=query_fetch_one[i][1], bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT)
                 Label(detailsframe, text="{}/{}".format(query_fetch_one[i][2],query_fetch_one[i][3]), bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT)
                 Label(detailsframe, text=query_fetch_one[i][4], bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT)
 
             def psngdetails():
+                bus_selected = radvar.get()
                 entryframe = Frame(bookWin, bg="white")
                 Label(entryframe, text="Fill Passenger Details to book the bus ticket", font=('Montserrat Bold', 20), bg="LightBlue", fg="Red").pack(pady=(20, 20))
                 Label(entryframe, text="Name", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(0, 20))
-                Entry(entryframe, width=20, bg="white").pack(side=LEFT, padx=(0, 10))
+                name_entry = Entry(entryframe, width=20, bg="white")
+                name_entry.pack(side=LEFT, padx=(0, 10))
                 Label(entryframe, text="Gender", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(15, 20))
                 options = [
                     "Male",
@@ -137,75 +136,115 @@ def keypress(event):
                 ]
                 clicked = StringVar()
                 clicked.set("Select Gender")
-                OptionMenu(entryframe, clicked, *options).pack(side=LEFT, padx=(10, 20))
+                gender_entry = OptionMenu(entryframe, clicked, *options)
+                gender_entry.pack(side=LEFT, padx=(10, 20))
                 Label(entryframe, text="No of Seats", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(15, 20))
-                Entry(entryframe, width=10, bg="white").pack(side=LEFT, padx=(5, 20))
+                no_of_seats_entry = Entry(entryframe, width=10, bg="white")
+                no_of_seats_entry.pack(side=LEFT, padx=(5, 20))
                 Label(entryframe, text="Mobile No.", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(15, 20))
-                Entry(entryframe, width=20, bg="white").pack(side=LEFT, padx=(5, 20))
+                mob_entry = Entry(entryframe, width=20, bg="white")
+                mob_entry.pack(side=LEFT, padx=(5, 20))
                 Label(entryframe, text="Age", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(15, 20))
-                Entry(entryframe, width=10, bg="white").pack(side=LEFT, padx=(5, 20))
+                age_entry = Entry(entryframe, width=10, bg="white")
+                age_entry.pack(side=LEFT, padx=(5, 20))
 
                 def book_seatButton():
-                    answer = askokcancel(
-                        title="Fare Confirm",
-                        message="Total amount to be paid will be:",
-                        icon=WARNING
-                    )
-                    if answer:
-                        bookWin.withdraw()
-                        bookedWin = Toplevel(bookWin)
-                        bookedWin.title("Bus Ticketing M.S.")
-                        bookedWin.geometry("%dx%d" % (width, height))
-                        bookedWin.configure(bg="white")
-                        bookedframe = Frame(bookedWin, bg="white")
-                        Label(bookedframe, image=new_logo).pack(pady=(70, 0))
-                        Label(bookedframe, text="Online Bus Booking System", font=('Montserrat ExtraBold', 40), bg="LightBlue", fg="Red").pack(pady=25)
-                        Label(bookedframe, text="Bus Ticket", font=('Montserrat Bold', 20), bg="white", fg="Black").pack()
-                        bookedlabelFrame = LabelFrame(bookedWin, text="Ticket Details")
-
-                        Label(bookedlabelFrame, text="Passengers:").pack()
-                        Label(bookedlabelFrame, text="No of Seats:").pack()
-                        Label(bookedlabelFrame, text="Age:").pack()
-                        Label(bookedlabelFrame, text="Booking Reference ID:").pack()
-                        Label(bookedlabelFrame, text="Travel on:").pack()
-                        Label(bookedlabelFrame, text="No of seats:").pack()
-
-                        Label(bookedlabelFrame, text="Gender:").pack()
-                        Label(bookedlabelFrame, text="Phone:").pack()
-                        Label(bookedlabelFrame, text="Fare:").pack()
-                        Label(bookedlabelFrame, text="Bus Detail:").pack()
-                        Label(bookedlabelFrame, text="Booked on:").pack()
-                        Label(bookedlabelFrame, text="Boarding Point:").pack()
-
-                        Label(bookedlabelFrame, text="* Total amount of Rs.1000.00/- will be paid at the time of boarding the bus.").pack()
-
-                        bookedframe.pack()
-                        bookedlabelFrame.pack()
-
+                    if int(age_entry.get()) > 100:  # PLEASE UPDATE ACCORDING TO COUNTRY STANDARDS!!
                         showinfo(
-                            title="Success Transaction",
-                            message="Seat Booked"
+                            title="Age Error",
+                            message="Please enter a valid age!! (UNDER 100)!"
                         )
+                        age_entry.delete(0, END)
+                        return
 
-                        def bookedWinclose_Handler():
-                            answin= askyesnocancel(
-                                title="Closing Confirmation",
-                                message="For exiting press Yes or No to return to menu",
-                                default=YES
+                    else:
+                        seats = int(no_of_seats_entry.get())
+                        print(seats)
+                        print(query_fetch_one[bus_selected][3])
+                        dbcon = sqlite3.connect("BUS MS")
+                        cursor = dbcon.execute("UPDATE runs SET available={} WHERE runid={};".format(int(query_fetch_one[bus_selected][3]-seats), query_fetch_one[bus_selected][5]))
+                        print(cursor.fetchall())
+                        #dbcon.commit()
+                        cursor = dbcon.execute("SELECT MAX(id) FROM passenger;")
+                        max_pass = cursor.fetchall()
+                        cursor = dbcon.execute("SELECT contact FROM passenger WHERE contact={};".format(int(mob_entry.get())))
+                        test =cursor.fetchall()
+                        if len(test) == 0:
+                            cursor = dbcon.execute("""INSERT INTO passenger VALUES({},"{}",{},{},"{}")""".format((int(max_pass[0][0])+1), name_entry.get(), mob_entry.get(), age_entry.get(), clicked.get()))
+                            print(cursor.fetchall())
+                            #dbcon.commit()
+                        else:
+                            cursor = dbcon.execute("""UPDATE passenger SET name="{}",age={},gender="{}" WHERE contact={};""".format(name_entry.get(), age_entry.get(), clicked.get(), mob_entry.get()))
+                            print(cursor.fetchall())
+                            #dbcon.commit()
+
+                        cursor = dbcon.execute("SELECT MAX(payid) FROM payment;")
+                        max_payne = cursor.fetchall()
+
+                        cursor = dbcon.execute("""INSERT INTO payment VALUES({},{},{},"{}",{},{})""".format((int(max_payne[0][0])+1), (int(max_pass[0][0])+1), query_fetch_one[bus_selected][4]*seats, date.today(), seats, query_fetch_one[bus_selected][6]))
+                        print(cursor.fetchall())
+                        #dbcon.commit()
+
+                        answer = askokcancel(
+                            title="Fare Confirm",
+                            message="Total amount to be paid will be:",
+                            icon=WARNING
+                        )
+                        if answer:
+                            bookWin.withdraw()
+                            bookedWin = Toplevel(bookWin)
+                            bookedWin.title("Bus Ticketing M.S.")
+                            bookedWin.geometry("%dx%d" % (width, height))
+                            bookedWin.configure(bg="white")
+                            bookedframe = Frame(bookedWin, bg="white")
+                            Label(bookedframe, image=new_logo).pack(pady=(70, 0))
+                            Label(bookedframe, text="Online Bus Booking System", font=('Montserrat ExtraBold', 40), bg="LightBlue", fg="Red").pack(pady=25)
+                            Label(bookedframe, text="Bus Ticket", font=('Montserrat Bold', 20), bg="white", fg="Black").pack()
+                            bookedlabelFrame = LabelFrame(bookedWin, text="Ticket Details")
+
+                            Label(bookedlabelFrame, text="Passengers:").pack()
+                            Label(bookedlabelFrame, text="No of Seats:").pack()
+                            Label(bookedlabelFrame, text="Age:").pack()
+                            Label(bookedlabelFrame, text="Booking Reference ID:").pack()
+                            Label(bookedlabelFrame, text="Travel on:").pack()
+                            Label(bookedlabelFrame, text="No of seats:").pack()
+
+                            Label(bookedlabelFrame, text="Gender:").pack()
+                            Label(bookedlabelFrame, text="Phone:").pack()
+                            Label(bookedlabelFrame, text="Fare:").pack()
+                            Label(bookedlabelFrame, text="Bus Detail:").pack()
+                            Label(bookedlabelFrame, text="Booked on:").pack()
+                            Label(bookedlabelFrame, text="Boarding Point:").pack()
+
+                            Label(bookedlabelFrame, text="* Total amount of Rs.1000.00/- will be paid at the time of boarding the bus.").pack()
+
+                            bookedframe.pack()
+                            bookedlabelFrame.pack()
+
+                            showinfo(
+                                title="Success Transaction",
+                                message="Seat Booked"
                             )
-                            if answin is True:
-                                showinfo(
-                                    title="Appreciation Message",
-                                    message="Thank you for using my Bus Ticket Management system!!"
-                                )
-                                win.destroy()
-                            elif answin is None:
-                                print("Pressed Cancel!!")
-                            else:
-                                bookedWin.destroy()
-                                newWin.deiconify()
 
-                        bookedWin.protocol("WM_DELETE_WINDOW", bookedWinclose_Handler)
+                            def bookedWinclose_Handler():
+                                answin= askyesnocancel(
+                                    title="Closing Confirmation",
+                                    message="For exiting press Yes or No to return to menu",
+                                    default=YES
+                                )
+                                if answin is True:
+                                    showinfo(
+                                        title="Appreciation Message",
+                                        message="Thank you for using my Bus Ticket Management system!!"
+                                    )
+                                    win.destroy()
+                                elif answin is None:
+                                    print("Pressed Cancel!!")
+                                else:
+                                    bookedWin.destroy()
+                                    newWin.deiconify()
+
+                            bookedWin.protocol("WM_DELETE_WINDOW", bookedWinclose_Handler)
                 Button(entryframe, text="Book Seat(s)", font=('Montserrat Medium', 15), cursor="hand2", fg="Black", bg="LightGreen", command=book_seatButton).pack(side=LEFT, padx=(20, 0))
                 entryframe.pack()
                 dbcon.close()
