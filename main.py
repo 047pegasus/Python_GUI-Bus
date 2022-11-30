@@ -210,6 +210,18 @@ def keypress(event):
             newWin.deiconify()
 
         Button(bookframe, image=home, cursor="hand2", command=mv_home).pack(side=LEFT)
+
+        def bookWinclose_Handler():
+            ansuser = askokcancel(
+                title="Closing Confirmation",
+                message="For exiting press Yes or No to return to menu",
+            )
+            if ansuser is True:
+                win.destroy()
+            else:
+                print("User selected cancel")
+
+        bookWin.protocol("WM_DELETE_WINDOW", bookWinclose_Handler)
         bookframe.pack()
 
     def check_book():
@@ -257,6 +269,17 @@ def keypress(event):
             dbcon.close()
         Button(checkheadframe, text="Check Booking", font=('Montserrat Medium', 15), bg="White", fg="Black", command=chk_bk, cursor="hand2").pack(side=LEFT, padx=(10, 0), pady=10)
 
+        def checkWinclose_Handler():
+            ansuser = askokcancel(
+                title="Closing Confirmation",
+                message="For exiting press Yes or No to return to menu",
+            )
+            if ansuser is True:
+                win.destroy()
+            else:
+                print("User selected cancel")
+
+        checkWin.protocol("WM_DELETE_WINDOW", checkWinclose_Handler)
         checkheadframe.pack()
 
     def admin_ms():
@@ -346,8 +369,19 @@ def keypress(event):
             def mv_home():
                 newoprWin.destroy()
                 newWin.deiconify()
-            Button(newoprframe, image=home, cursor="hand2",command= mv_home).pack(side=LEFT, pady=20)
+            Button(newoprframe, image=home, cursor="hand2", command=mv_home).pack(side=LEFT, pady=20)
 
+            def newoprWinclose_Handler():
+                ansuser = askokcancel(
+                    title="Closing Confirmation",
+                    message="For exiting press Yes or No to return to menu",
+                )
+                if ansuser is True:
+                    win.destroy()
+                else:
+                    print("User selected cancel")
+
+            newoprWin.protocol("WM_DELETE_WINDOW", newoprWinclose_Handler)
             newoprframe.pack()
 
         def new_bus():
@@ -410,7 +444,7 @@ def keypress(event):
                     print(cursor.fetchall())
                     cursor = dbcon.execute("""SELECT MAX(runid) FROM runs;""")
                     max_run= cursor.fetchall()
-                    max_runint = int(max_run) + 1
+                    max_runint = int(max_run[0]) + 1
                     cursor = dbcon.execute("""INSERT INTO runs (runid,busid,routeid,fare) VALUES({},{},{},{});""".format(max_runint, int(busidentry.get()),  int(routeidentry.get()), int(fareentry.get())))
                     dbcon.commit()
                     print(cursor.fetchall())
@@ -465,6 +499,17 @@ def keypress(event):
 
             Button(newbusframe, image=home, cursor="hand2", command=mv_home).pack(side=LEFT, pady=20)
 
+            def newbusWinclose_Handler():
+                ansuser = askokcancel(
+                    title="Closing Confirmation",
+                    message="For exiting press Yes or No to return to menu",
+                )
+                if ansuser is True:
+                    win.destroy()
+                else:
+                    print("User selected cancel")
+
+            newbusWin.protocol("WM_DELETE_WINDOW", newbusWinclose_Handler)
             newbusframe.pack()
 
         def new_route():
@@ -507,7 +552,7 @@ def keypress(event):
                     dbcon.commit()
                     cursor = dbcon.execute("""SELECT max(cid) FROM city;""")
                     max_city = cursor.fetchall()
-                    max_cities= int(max_city)
+                    max_cities= int(max_city[0])
                     cursor = dbcon.execute("""SELECT cname FROM city;""")
                     cities = cursor.fetchall()
                     print(cities)
@@ -519,26 +564,40 @@ def keypress(event):
 
                     dbcon.close()
                     showinfo(
-                        title="Bus Entry Added",
-                        message="Bus Record added successfully!!"
+                        title="Route Entry Added",
+                        message="Route Record added successfully!!"
                     )
 
                 routeidentry.delete(0, END)
                 stationnameentry.delete(0, END)
                 stationidentry.delete(0, END)
 
-            def updateroute():
+            def deleteroute():
+                dbcon = sqlite3.connect("BUS MS")
+                cursor = dbcon.execute("""SELECT rid FROM route WHERE route.rid={};""".format(int(routeidentry.get())))
+                output = cursor.fetchall()
+                if len(output) == 0:
+                    print("ROUTE NOT FOUND!!")
+                    showinfo(
+                        title="ERROR",
+                        message="ROUTE NOT FOUND!!"
+                    )
 
-                showinfo(
-                    title="Bus Route Update",
-                    message="Bus Route added successfully"
-                )
+                else:
+                    cursor = dbcon.execute("""DELETE FROM city WHERE cid={} AND cname="{}";""".format(int(stationidentry.get()), stationnameentry.get()))
+                    print(cursor.fetchall())
+                    dbcon.commit()
+                    dbcon.close()
+                    showinfo(
+                        title="Bus Route Update",
+                        message="Bus Route Deleted successfully"
+                    )
                 routeidentry.delete(0, END)
                 stationnameentry.delete(0, END)
                 stationidentry.delete(0, END)
 
             Button(newrouteframe, text="Add Route", font=('Montserrat Medium', 20), bg="Lime Green", fg="Black", cursor="hand2", command=addroute).pack(side=LEFT, pady=40, padx=(10, 10))
-            Button(newrouteframe, text="Delete Route", font=('Montserrat Medium', 20), bg="Lime Green", fg="Red", cursor="hand2", command=updateroute).pack(side=LEFT, pady=40, padx=(10, 10))
+            Button(newrouteframe, text="Delete Route", font=('Montserrat Medium', 20), bg="Lime Green", fg="Red", cursor="hand2", command=deleteroute).pack(side=LEFT, pady=40, padx=(10, 10))
 
             def mv_home():
                 newrouteWin.destroy()
@@ -546,6 +605,17 @@ def keypress(event):
 
             Button(newrouteframe, image=home, cursor="hand2", command=mv_home).pack(side=LEFT, pady=40)
 
+            def newrouteWinclose_Handler():
+                ansuser = askokcancel(
+                    title="Closing Confirmation",
+                    message="For exiting press Yes or No to return to menu",
+                )
+                if ansuser is True:
+                    win.destroy()
+                else:
+                    print("User selected cancel")
+
+            newrouteWin.protocol("WM_DELETE_WINDOW", newrouteWinclose_Handler)
             newrouteframe.pack()
 
         def new_run():
@@ -572,26 +642,25 @@ def keypress(event):
 
             def addrun():
                 dbcon = sqlite3.connect("BUS MS")
-                cursor = dbcon.execute("""SELECT routeid FROM runs WHERE busid={}""".format(int(busidentry.get())))
+                cursor = dbcon.execute("""SELECT busid FROM bus WHERE busid={}""".format(int(busidentry.get())))
                 output = cursor.fetchall()
                 if len(output) == 0:
                     print("ROUTE OR BUS NOT FOUND!!")
                     showinfo(
                         title="ERROR",
-                        message="ROUTE(BUS) NOT FOUND!!"
+                        message="BUS NOT FOUND!!"
                     )
 
                 else:
                     cursor= dbcon.execute("""SELECT MAX(runid) FROM runs;""")
                     max_run = cursor.fetchall()
-                    maxrunint = int(max_run) + 1
+                    maxrunint = int(max_run[0]) + 1
                     cursor = dbcon.execute("""INSERT INTO runs(runid,busid,date,available) VALUES({},{},"{}",{});""".format(maxrunint, int(busidentry.get()), runningdateentry.get(), int(seatavbentry.get())))
                     print(cursor.fetchall())
                     dbcon.commit()
+                    dbcon.close()
 
-                dbcon.close()
-
-            def updaterun():
+            def deleterun():
                 showinfo(
                     title="Bus Run Update",
                     message="Bus Run updated successfully"
@@ -601,7 +670,7 @@ def keypress(event):
                 seatavbentry.delete(0, END)
 
             Button(newrunframe, text="Add Run", font=('Montserrat Medium', 20), bg="Lime Green", fg="Black", cursor="hand2", command=addrun).pack(side=LEFT, pady=50, padx=(10, 10))
-            Button(newrunframe, text="Delete Run", font=('Montserrat Medium', 20), bg="Lime Green", fg="Red", cursor="hand2", command=updaterun).pack(side=LEFT, pady=50, padx=(10, 10))
+            Button(newrunframe, text="Delete Run", font=('Montserrat Medium', 20), bg="Lime Green", fg="Red", cursor="hand2", command=deleterun).pack(side=LEFT, pady=50, padx=(10, 10))
 
             def mv_home():
                 newrunWin.destroy()
@@ -609,12 +678,35 @@ def keypress(event):
 
             Button(newrunframe, image=home, cursor="hand2", command=mv_home).pack(side=LEFT, pady=50)
 
+            def newrunWinclose_Handler():
+                ansuser = askokcancel(
+                    title="Closing Confirmation",
+                    message="For exiting press Yes or No to return to menu",
+                )
+                if ansuser is True:
+                    win.destroy()
+                else:
+                    print("User selected cancel")
+
+            newrunWin.protocol("WM_DELETE_WINDOW", newrunWinclose_Handler)
             newrunframe.pack()
 
         Button(adminframe, text="New Operator", font=('Montserrat Medium', 25), bg="lawn green", fg="Black", border=3, command=new_opr, cursor="hand2").pack(side=LEFT, padx=(0, 50), pady=40)
         Button(adminframe, text="New Bus", font=('Montserrat Medium', 25), bg="orange red", fg="Black", border=3, command=new_bus, cursor="hand2").pack(side=LEFT, padx=(50, 50), pady=40)
         Button(adminframe, text="New Route", font=('Montserrat Medium', 25), bg="SlateBlue2", fg="Black", border=3, command=new_route, cursor="hand2").pack(side=LEFT, padx=(50, 50), pady=40)
         Button(adminframe, text="New Run", font=('Montserrat Medium', 25), bg="DarkOrchid2", fg="Black", border=3, command=new_run, cursor="hand2").pack(side=LEFT, padx=(50, 0), pady=40)
+
+        def adminWinclose_Handler():
+            ansuser = askokcancel(
+                title="Closing Confirmation",
+                message="For exiting press Yes or No to return to menu",
+            )
+            if ansuser is True:
+                win.destroy()
+            else:
+                print("User selected cancel")
+
+        adminWin.protocol("WM_DELETE_WINDOW", adminWinclose_Handler)
 
         adminframe.pack()
 
