@@ -112,11 +112,14 @@ def keypress(event):
             avbframe.pack()
 
             detailsframe = Frame(bookWin, bg="white")
-
+            h = Scrollbar(detailsframe, orient='horizontal')
+            h.pack(side=BOTTOM, fill=X)
+            v = Scrollbar(detailsframe)
+            v.pack(side=BOTTOM, fill=Y)
             #radvar = IntVar(detailsframe, 1)
             for i in range(count):
                 #Radiobutton(detailsframe, text="Bus 1", variable=radvar, value="1", bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT, padx=(150, 200))
-                Label(detailsframe, text=query_fetch_one[i][0], bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT)
+                Label(detailsframe, text=query_fetch_one[i][0], bg="white", font=('Montserrat Medium', 15,)).pack(side=LEFT)
                 Label(detailsframe, text=query_fetch_one[i][1], bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT)
                 Label(detailsframe, text="{}/{}".format(query_fetch_one[i][2],query_fetch_one[i][3]), bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT)
                 Label(detailsframe, text=query_fetch_one[i][4], bg="white", font=('Montserrat Medium', 15)).pack(side=LEFT)
