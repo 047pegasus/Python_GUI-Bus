@@ -4,26 +4,34 @@ from tkinter.messagebox import askokcancel, askyesnocancel, showinfo, WARNING, Y
 import sqlite3
 
 dbcon = sqlite3.connect("BUS MS")
+
 cursor = dbcon.execute("SELECT * FROM bus")
 bus_fetch = cursor.fetchall()
+print(bus_fetch)
 
 cursor = dbcon.execute("SELECT * FROM city")
 city_fetch = cursor.fetchall()
+print(city_fetch)
 
 cursor = dbcon.execute("SELECT * FROM operator")
 operator_fetch = cursor.fetchall()
+print(operator_fetch)
 
 cursor = dbcon.execute("SELECT * FROM passenger")
 passenger_fetch = cursor.fetchall()
+print(passenger_fetch)
 
 cursor = dbcon.execute("SELECT * FROM payment")
 payment_fetch = cursor.fetchall()
+print(payment_fetch)
 
 cursor = dbcon.execute("SELECT * FROM route")
 route_fetch = cursor.fetchall()
+print(route_fetch)
 
 cursor = dbcon.execute("SELECT * FROM runs")
 runs_fetch = cursor.fetchall()
+print(runs_fetch)
 
 win = Tk()
 width = win.winfo_screenwidth()
