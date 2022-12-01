@@ -54,7 +54,8 @@ Label(frame, text="Online Bus Booking System", font=('Montserrat ExtraBold', 40)
 
 Label(frame, text="Name: Tanishq Agarwal", font=('Montserrat ExtraBold', 20), fg="Blue", bg="white").pack(pady=(50, 25))
 Label(frame, text="Enrollment: 211B326", font=('Montserrat ExtraBold', 20), fg="Blue", bg="white").pack(pady=25)
-Label(frame, text="Mobile: 9984429317", font=('Montserrat ExtraBold', 20), fg="Blue", bg="white").pack(pady=(25, 0))
+Label(frame, text="Batch: B-9", font=('Montserrat ExtraBold', 20), fg="Blue", bg="white").pack(pady=(25, 0))
+Label(frame, text="Mobile: 9984429317", font=('Montserrat ExtraBold', 20), fg="Blue", bg="white").pack(pady=25)
 
 frame.pack()
 
@@ -155,6 +156,14 @@ def keypress(event):
                             message="Please enter a valid age!! (UNDER 100)!"
                         )
                         age_entry.delete(0, END)
+                        return
+
+                    elif int(no_of_seats_entry.get()) > 30:
+                        showinfo(
+                            title="Seat Error",
+                            message="Please enter seats under capacity!! (UNDER 100)!"
+                        )
+                        no_of_seats_entry.delete(0, END)
                         return
 
                     else:
@@ -298,21 +307,21 @@ def keypress(event):
 
             chkbklabelFrame = LabelFrame(checkWin, text="Ticket Details")
 
-            Label(chkbklabelFrame, text="Passengers: {}".format(query_fetch_two[0][0])).pack()
-            Label(chkbklabelFrame, text="No of Seats: {}".format(query_fetch_two[0][4])).pack()
-            Label(chkbklabelFrame, text="Age: {}".format(query_fetch_two[0][3])).pack()
-            Label(chkbklabelFrame, text="Booking Reference ID: {}".format(query_fetch_two[0][5])).pack()
-            Label(chkbklabelFrame, text="Travel on: {}".format(query_fetch_two[0][9])).pack()
+            Label(chkbklabelFrame, text="Passengers: {}".format(query_fetch_two[0][0]), bg="white", fg="black", font=('Montserrat Medium', 10)).pack()
+            Label(chkbklabelFrame, text="No of Seats: {}".format(query_fetch_two[0][4]), bg="white", fg="black", font=('Montserrat Medium', 10)).pack()
+            Label(chkbklabelFrame, text="Age: {}".format(query_fetch_two[0][3]), bg="white", fg="black", font=('Montserrat Medium', 10)).pack()
+            Label(chkbklabelFrame, text="Booking Reference ID: {}".format(query_fetch_two[0][5]), bg="white", fg="black", font=('Montserrat Medium', 10)).pack()
+            Label(chkbklabelFrame, text="Travel on: {}".format(query_fetch_two[0][9]), bg="white", fg="black", font=('Montserrat Medium', 10)).pack()
 
-            Label(chkbklabelFrame, text="Gender: {}".format(query_fetch_two[0][2])).pack()
-            Label(chkbklabelFrame, text="Phone: {}".format(query_fetch_two[0][1])).pack()
-            Label(chkbklabelFrame, text="Fare: {}".format(query_fetch_two[0][6])).pack()
+            Label(chkbklabelFrame, text="Gender: {}".format(query_fetch_two[0][2]), bg="white", fg="black", font=('Montserrat Medium', 10)).pack()
+            Label(chkbklabelFrame, text="Phone: {}".format(query_fetch_two[0][1]), bg="white", fg="black", font=('Montserrat Medium', 10)).pack()
+            Label(chkbklabelFrame, text="Fare: {}".format(query_fetch_two[0][6]), bg="white", fg="black", font=('Montserrat Medium', 10)).pack()
             #Label(chkbklabelFrame, text="Bus Detail:").pack()
             #Label(chkbklabelFrame, text="Booked on:").pack()
-            Label(chkbklabelFrame, text="Boarding Point: {}".format(query_fetch_two[0][8])).pack()
-            Label(chkbklabelFrame, text="Destination Point: {}".format(query_fetch_two[0][7])).pack()
+            Label(chkbklabelFrame, text="Boarding Point: {}".format(query_fetch_two[0][8]), bg="white", fg="black", font=('Montserrat Medium', 10)).pack()
+            Label(chkbklabelFrame, text="Destination Point: {}".format(query_fetch_two[0][7]), bg="white", fg="black", font=('Montserrat Medium', 10)).pack()
 
-            Label(chkbklabelFrame, text="* Total amount of Rs.{}/- will be paid at the time of boarding the bus.".format(query_fetch_two[0][4]*1000)).pack()
+            Label(chkbklabelFrame, text="* Total amount of Rs.{}/- will be paid at the time of boarding the bus.".format(query_fetch_two[0][4]*1000), bg="white", fg="black", font=('Montserrat Medium', 10)).pack()
 
             chkbklabelFrame.pack()
             dbcon.close()
